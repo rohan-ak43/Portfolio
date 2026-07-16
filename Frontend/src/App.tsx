@@ -942,7 +942,7 @@ function Contact() {
                                 { symbol: '✉', label: 'akrohan437@gmial.com', href: 'mailto:akrohan437@gmial.com' },
                                 { symbol: '💼', label: 'linkedin.com/in/arohancist', href: 'https://www.linkedin.com/in/arohancist/' },
                                 { symbol: '⌨', label: 'github.com/rohan-ak43', href: 'https://github.com/rohan-ak43' },
-                                { symbol: '📍', label: 'San Francisco, CA', href: undefined },
+                                { symbol: '📍', label: 'Chennai, Tamil Nadu, India', href: undefined },
                             ].map(({ symbol, label, href }) => (
                                 <div key={label} className="flex items-center gap-3 text-gray-500">
                                     <span className="text-base w-5 text-center">{symbol}</span>
