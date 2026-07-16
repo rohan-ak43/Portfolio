@@ -15,7 +15,7 @@ import {
     useSpring,
 } from 'framer-motion'
 
-// ─── Data ────────────────────────────────────────────────────────────────────
+// Data 
 
 const NAV_LINKS = ['Home', 'About', 'Resume', 'Portfolio', 'Skills', 'Contact']
 
@@ -135,7 +135,7 @@ const TYPE_STYLE: Record<string, { dot: string; badge: string; label: string }> 
     certification: { dot: '#6EE7B7', badge: '#DFF7EC', label: 'Certification' },
 }
 
-// ─── Shared primitives ───────────────────────────────────────────────────────
+// Shared primitives 
 
 function Hi({ children, color }: { children: React.ReactNode; color: string }) {
     return (
@@ -177,7 +177,7 @@ function SectionLabel({ children }: { children: string }) {
     )
 }
 
-// ─── Custom Cursor ────────────────────────────────────────────────────────────
+// Custom Cursor 
 
 function Cursor() {
     const x = useMotionValue(-100)
@@ -215,7 +215,7 @@ function Cursor() {
     )
 }
 
-// ─── Scroll Progress Bar ──────────────────────────────────────────────────────
+// Scroll Progress Bar 
 
 function ScrollProgress() {
     const { scrollYProgress } = useScroll()
@@ -231,7 +231,7 @@ function ScrollProgress() {
     )
 }
 
-// ─── Neural Network animation ─────────────────────────────────────────────────
+// Neural Network animation 
 
 const NODES = [
     { x: 50, y: 18 }, { x: 18, y: 40 }, { x: 82, y: 38 },
@@ -305,7 +305,7 @@ function NeuralNet() {
     )
 }
 
-// ─── Animated background blobs ────────────────────────────────────────────────
+// Animated background blobs 
 
 function Blobs() {
     return (
@@ -343,7 +343,7 @@ function Blobs() {
     )
 }
 
-// ─── Staggered text reveal ────────────────────────────────────────────────────
+// Staggered text reveal 
 
 function RevealWord({ word, delay }: { word: string; delay: number }) {
     return (
@@ -358,7 +358,7 @@ function RevealWord({ word, delay }: { word: string; delay: number }) {
     )
 }
 
-// ─── Navbar ──────────────────────────────────────────────────────────────────
+// Navbar 
 
 function Navbar() {
     const [scrolled, setScrolled] = useState(false)
@@ -466,7 +466,7 @@ function Navbar() {
     )
 }
 
-// ─── Hero ────────────────────────────────────────────────────────────────────
+// Hero 
 
 const HERO_WORDS = ['Hello,', "I'm", 'A Rohan.']
 
@@ -614,7 +614,7 @@ function Hero() {
     )
 }
 
-// ─── About ───────────────────────────────────────────────────────────────────
+// About 
 
 const ABOUT_CARDS = [
     { icon: '🎓', title: 'Education', text: "B.S. Computer Science, AI/ML specialization. Dean's List 3 consecutive semesters.", accent: '#DCEEFF' },
@@ -684,7 +684,7 @@ function About() {
     )
 }
 
-// ─── Resume ──────────────────────────────────────────────────────────────────
+// Resume 
 
 function TimelineItem({ item, index }: { item: (typeof TIMELINE)[0]; index: number }) {
     const ref = useRef(null)
@@ -759,7 +759,7 @@ function Resume() {
     )
 }
 
-// ─── Portfolio ───────────────────────────────────────────────────────────────
+// Portfolio 
 
 function ProjectCard({ project, index }: { project: (typeof PROJECTS)[0]; index: number }) {
     const ref = useRef(null)
@@ -857,7 +857,7 @@ function Portfolio() {
     )
 }
 
-// ─── Skills ──────────────────────────────────────────────────────────────────
+// Skills 
 
 function Skills() {
     return (
@@ -906,7 +906,7 @@ function Skills() {
     )
 }
 
-// ─── Contact ─────────────────────────────────────────────────────────────────
+// Contact 
 
 function Contact() {
     const [form, setForm] = useState({ name: '', email: '', message: '' })
@@ -1002,8 +1002,8 @@ function Contact() {
                                     initial={{ opacity: 0.8 }}
                                     animate={{ opacity: 1 }}
                                     className={`w-full py-4 rounded-xl text-[13px] font-medium transition-colors ${sent
-                                            ? 'bg-emerald-500 text-white'
-                                            : 'bg-gray-900 text-white hover:bg-gray-700'
+                                        ? 'bg-emerald-500 text-white'
+                                        : 'bg-gray-900 text-white hover:bg-gray-700'
                                         }`}
                                 >
                                     {sent ? '✓ Message Sent!' : 'Send Message'}
@@ -1017,7 +1017,7 @@ function Contact() {
     )
 }
 
-// ─── Footer ──────────────────────────────────────────────────────────────────
+// Footer 
 
 function Footer() {
     return (
@@ -1046,7 +1046,7 @@ function Footer() {
     )
 }
 
-// ─── App ─────────────────────────────────────────────────────────────────────
+// App 
 
 export default function App() {
     return (
