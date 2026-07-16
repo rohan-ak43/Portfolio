@@ -1,0 +1,15 @@
+{
+    "title": "Rohan's Portfolio",
+    "description": "Personal portfolio website",
+    "language": "en",
+    "robots": {
+        "index": true
+    },
+    "icons": {},
+    "openGraph": {},
+    "analytics": {},
+    "customScripts": {},
+    "accessibility": {
+        "addBypassLinks": false
+    }
+}
