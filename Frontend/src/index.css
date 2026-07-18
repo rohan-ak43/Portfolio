@@ -19,10 +19,10 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #e4e4e7;
+    background: #D2D2D7;
     border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #d1d1d6;
+    background: #86868B;
 }
