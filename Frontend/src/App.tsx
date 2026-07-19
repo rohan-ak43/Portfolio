@@ -309,15 +309,10 @@ function KeyboardIllustration() {
     const [litKeys, setLitKeys] = useState<Set<string>>(new Set())
 
     useEffect(() => {
-        // Key IDs for "A Rohan":
-        // Row 2, idx 1 = A | Row 4, idx 3 = Space | Row 1, idx 4 = R
-        // Row 1, idx 9 = O | Row 2, idx 6 = H | Row 3, idx 6 = N
-        // Row 3, idx 0 = Shift (lit with each capital)
+        // Key IDs for "Rohan":
+        // Row 1, idx 4 = R | Row 1, idx 9 = O | Row 2, idx 6 = H
+        // Row 2, idx 1 = a | Row 3, idx 6 = n
         const sequence: string[][] = [
-            ['3-0', '2-1'],  // Shift + A  (capital A)
-            [],              // pause between letters
-            ['4-3'],         // Space
-            [],              // pause
             ['3-0', '1-4'],  // Shift + R  (capital R)
             [],              // pause
             ['1-9'],         // o
@@ -856,45 +851,16 @@ function Hero() {
                         initial={{ opacity: 0, y: 16 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.88 }}
-                        className="leading-relaxed mb-8 text-[15px] max-w-[500px]"
+                        className="leading-relaxed mb-6 text-[15px] max-w-[500px]"
                         style={{ color: dark ? '#8E8E93' : '#6E6E73' }}
                     >
-                        Computer Science student building at the intersection of{' '}
+                        Computer Science Engineering student building at the intersection of{' '}
                         <Hi color="rgba(29,29,31,0.18)">Machine Learning</Hi>,{' '}
-                        <Hi color="rgba(29,29,31,0.18)">Computer Vision</Hi>, and{' '}
-                        <Hi color="rgba(29,29,31,0.18)">Full Stack Engineering</Hi>. Passionate about{' '}
-                        <Hi color="rgba(134,134,139,0.18)">Generative AI</Hi> and intelligent products.
+                        <Hi color="rgba(29,29,31,0.18)">Large Language Models</Hi>, and{' '}
+                        <Hi color="rgba(29,29,31,0.18)">RAG Systems</Hi>. Passionate about{' '}
+                        <Hi color="rgba(134,134,139,0.18)">Generative AI</Hi> and AI Agents.
                     </motion.p>
 
-                    <motion.div
-                        initial={{ opacity: 0, y: 16 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.98 }}
-                        className="flex flex-wrap gap-2 mb-10"
-                    >
-                        {[
-                            { label: 'Deep Learning', color: 'rgba(29,29,31,0.15)' },
-                            { label: 'FastAPI', color: 'rgba(29,29,31,0.15)' },
-                            { label: 'React', color: 'rgba(29,29,31,0.15)' },
-                            { label: 'PyTorch', color: 'rgba(134,134,139,0.15)' },
-                            { label: 'Claude API', color: 'rgba(29,29,31,0.15)' },
-                        ].map(({ label, color }, i) => (
-                            <motion.span
-                                key={label}
-                                style={{
-                                    backgroundColor: dark ? 'rgba(255,255,255,0.08)' : color,
-                                    color: dark ? '#D1D5DB' : '#1D1D1F',
-                                    border: dark ? '1px solid rgba(255,255,255,0.12)' : '1px solid rgba(29,29,31,0.2)',
-                                }}
-                                className="text-[11px] font-medium px-3 py-1.5 rounded-full"
-                                initial={{ opacity: 0, scale: 0.85 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ duration: 0.4, delay: 1.05 + i * 0.06 }}
-                            >
-                                {label}
-                            </motion.span>
-                        ))}
-                    </motion.div>
 
                     <motion.div
                         initial={{ opacity: 0, y: 16 }}
