@@ -28,7 +28,7 @@ const NAV_LINKS = ['Home', 'About', 'Resume', 'Portfolio', 'Skills', 'Contact']
 
 const PROJECTS = [
     {
-        title: 'AI Cricket Analytics',
+        title: 'CrickIQ - AI Cricket Analytics',
         description:
             'Real-time computer vision system analyzing match footage with YOLO-based player tracking, shot classification, and live performance dashboards.',
         tags: ['Python', 'OpenCV', 'YOLO', 'FastAPI', 'React'],
@@ -309,9 +309,6 @@ function KeyboardIllustration() {
     const [litKeys, setLitKeys] = useState<Set<string>>(new Set())
 
     useEffect(() => {
-        // Key IDs for "Rohan":
-        // Row 1, idx 4 = R | Row 1, idx 9 = O | Row 2, idx 6 = H
-        // Row 2, idx 1 = a | Row 3, idx 6 = n
         const sequence: string[][] = [
             ['3-0', '1-4'],  // Shift + R  (capital R)
             [],              // pause
@@ -796,24 +793,6 @@ function Hero() {
             <div className="relative z-10 max-w-6xl mx-auto px-6 py-28 w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 {/* Text */}
                 <div>
-                    <motion.p
-                        initial={{ opacity: 0, y: 14 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.3 }}
-                        className="text-[11px] font-mono tracking-[0.22em] uppercase mb-7 flex items-center gap-2"
-                        style={{ color: dark ? '#A1A1A6' : '#1D1D1F' }}
-                    >
-                        <motion.span
-                            className="inline-block w-1.5 h-1.5 rounded-full"
-                            style={{
-                                backgroundColor: dark ? '#4ADE80' : '#1D1D1F',
-                                boxShadow: dark ? '0 0 6px rgba(74,222,128,0.8)' : '0 0 6px rgba(29,29,31,0.8)',
-                            }}
-                            animate={{ scale: [1, 1.4, 1], opacity: [1, 0.6, 1] }}
-                            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-                        />
-                        Available for opportunities
-                    </motion.p>
 
                     <h1 className="font-display text-[58px] md:text-[74px] lg:text-[84px] font-bold leading-[1.02] tracking-[-0.025em] mb-5" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>
                         {HERO_WORDS.map((word, i) => (
@@ -910,7 +889,7 @@ const ABOUT_CARDS = [
             </svg>
         ),
         title: 'Education',
-        text: "B.S. Computer Science, AI/ML specialization. Dean's List 3 consecutive semesters.",
+        text: "B.S. Abdur Rahman Crescent Institute of Science and Technology, B.Tech.CSE(IoT).",
         accent: 'rgba(29,29,31,0.12)',
     },
     {
@@ -921,7 +900,7 @@ const ABOUT_CARDS = [
             </svg>
         ),
         title: 'Experience',
-        text: 'AI Research Intern at DataSynth Labs. Freelance full-stack engineer for 3+ years.',
+        text: 'Served as a Mobile Application Development Intern at Neohorizon Analytics.',
         accent: 'rgba(29,29,31,0.12)',
     },
     {
@@ -933,8 +912,8 @@ const ABOUT_CARDS = [
                 <path d="M12 19v2" />
             </svg>
         ),
-        title: 'Research',
-        text: 'Co-authored papers on document understanding and pose estimation for rehabilitation.',
+        title: 'Experience',
+        text: 'Lead the development of Forá (a time capsule app)',
         accent: 'rgba(29,29,31,0.12)',
     },
     {
@@ -946,7 +925,7 @@ const ABOUT_CARDS = [
             </svg>
         ),
         title: 'Interests',
-        text: 'Generative AI, robotics, open-source contribution, and developer tooling.',
+        text: "RAG Systems, AI Agents, LLM's, and Full Stack Development",
         accent: 'rgba(134,134,139,0.12)',
     },
 ]
@@ -969,18 +948,11 @@ function About() {
                         <div className="pt-10 space-y-4 leading-relaxed text-[15px]" style={{ color: dark ? '#8E8E93' : '#6E6E73' }}>
                             <p>
                                 I'm a Computer Science student with a deep curiosity for how machines learn. Over
-                                the last three years I've built everything from real-time computer vision pipelines
-                                to production-ready web applications.
+                                the last few years.
                             </p>
                             <p>
-                                My work lives at the intersection of <Hi color="rgba(29,29,31,0.18)">AI research</Hi> and{' '}
-                                <Hi color="rgba(29,29,31,0.18)">practical engineering</Hi> — I care about systems that are not
-                                just theoretically elegant but actually useful in the real world.
-                            </p>
-                            <p>
-                                When I'm not training models or writing APIs, I'm competing in hackathons,
-                                contributing to open source, and exploring the frontier of{' '}
-                                <Hi color="rgba(29,29,31,0.18)">Generative AI</Hi>.
+                                My work lives at the intersection of <Hi color="rgba(29,29,31,0.18)">Artificial Intelligence</Hi> and{' '}
+                                <Hi color="rgba(29,29,31,0.18)">Intelligent Systems</Hi>, develop and deploy them as production grade products.
                             </p>
                         </div>
                     </FadeUp>
@@ -1175,21 +1147,7 @@ function ProjectCard({ project, index }: { project: (typeof PROJECTS)[0]; index:
                 <div className="p-6 flex flex-col flex-1">
                     <h3 className="font-display font-bold text-[16px] mb-2" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>{project.title}</h3>
                     <p className="text-[13px] leading-relaxed mb-4 flex-1" style={{ color: dark ? '#8E8E93' : '#6E6E73' }}>{project.description}</p>
-                    <div className="flex flex-wrap gap-1.5 mb-5">
-                        {project.tags.map((tag) => (
-                            <span
-                                key={tag}
-                                className="text-[11px] px-2.5 py-1 rounded-lg"
-                                style={{
-                                    backgroundColor: dark ? 'rgba(255,255,255,0.06)' : '#F5F5F7',
-                                    color: dark ? '#A1A1A6' : '#1D1D1F',
-                                    border: dark ? '1px solid rgba(255,255,255,0.1)' : '1px solid #D2D2D7',
-                                }}
-                            >
-                                {tag}
-                            </span>
-                        ))}
-                    </div>
+
                     <div className="flex gap-2">
                         <motion.button
                             whileTap={{ scale: 0.95 }}
