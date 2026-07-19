@@ -1467,8 +1467,8 @@ function Contact() {
                                     animate={{ opacity: 1 }}
                                     className="w-full py-4 rounded-xl text-[13px] font-semibold transition-colors"
                                     style={sent
-                                        ? { backgroundColor: '#10B981', color: '#1D1D1F' }
-                                        : { background: '#1D1D1F', color: '#000000' }
+                                        ? { backgroundColor: '#10B981', color: '#FFFFFF' }
+                                        : { background: dark ? '#FFFFFF' : '#1D1D1F', color: dark ? '#0A0A0A' : '#FFFFFF' }
                                     }
                                 >
                                     {sent ? (
