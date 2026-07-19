@@ -248,7 +248,7 @@ function ScrollProgress() {
             style={{
                 scaleX,
                 background: dark
-                    ? 'linear-gradient(to right, #4C8EF7, #A78BFA, #F472B6)'
+                    ? 'linear-gradient(to right, #FFFFFF, #A0A0A0, #6E6E73)'
                     : 'linear-gradient(to right, #1D1D1F, #6E6E73, #D2D2D7)',
             }}
         />
@@ -908,8 +908,8 @@ function Hero() {
                             onClick={() => document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' })}
                             className="px-7 py-3.5 rounded-full text-[13px] font-semibold shadow-sm transition-shadow"
                             style={{
-                                background: dark ? 'linear-gradient(135deg, #4C8EF7, #7C3AED)' : '#1D1D1F',
-                                color: '#FFFFFF',
+                                background: dark ? '#FFFFFF' : '#1D1D1F',
+                                color: dark ? '#0A0A0A' : '#FFFFFF',
                             }}
                         >
                             View Projects
@@ -1219,7 +1219,7 @@ function ProjectCard({ project, index }: { project: (typeof PROJECTS)[0]; index:
                         <motion.button
                             whileTap={{ scale: 0.95 }}
                             className="flex-1 text-center text-[12px] font-medium py-2.5 rounded-xl transition-colors"
-                            style={{ background: dark ? 'linear-gradient(135deg, #4C8EF7, #7C3AED)' : '#1D1D1F', color: '#FFFFFF' }}
+                            style={{ background: dark ? '#FFFFFF' : '#1D1D1F', color: dark ? '#0A0A0A' : '#FFFFFF' }}
                         >
                             GitHub
                         </motion.button>
