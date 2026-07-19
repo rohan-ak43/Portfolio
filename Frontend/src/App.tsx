@@ -19,7 +19,7 @@ import {
 // Theme Context
 const ThemeContext = createContext<{ dark: boolean; toggleDark: () => void }>({
     dark: false,
-    toggleDark: () => {},
+    toggleDark: () => { },
 })
 
 // Data 
@@ -77,43 +77,43 @@ const PROJECTS = [
 const TIMELINE = [
     {
         type: 'education',
-        title: 'B.S. Computer Science',
-        org: 'University of Technology',
-        period: '2022 — Present',
+        title: 'B.S. Abdur Rahman Crescent Institute of Technology',
+        org: 'B.Tech CSE(IoT)',
+        period: '2023 — 2027',
         description:
-            "Specializing in Artificial Intelligence and Machine Learning with a Mathematics minor. Dean's List three consecutive semesters.",
+            "A 4th year undergraduate student with a strong foundation in computer science and a passion for artificial intelligence, machine learning and neural networks. \n Related Coursework: Data Structures & Algorithms, Python Programming, Probability & Statistics, Database Management System, Data Science and Machine Learning."
     },
     {
         type: 'experience',
-        title: 'AI Research Intern',
-        org: 'DataSynth Labs',
-        period: 'Summer 2024',
+        title: 'Mobile App Developer Intern',
+        org: 'Neohorizon Analytics',
+        period: 'June 2025 – July 2025',
         description:
-            'Developed a document understanding pipeline using transformer models, reducing extraction error by 34%. Co-authored two research papers.',
+            'Developed iOS Dynamic Island Live Activity app using SwiftUI and ActivityKit with 95% success rate in realtime stock updates; implemented 40-second auto-refresh for seamless tracking.',
     },
     {
         type: 'experience',
-        title: 'Full Stack Developer',
-        org: 'Freelance',
-        period: '2023 — Present',
+        title: 'Co – Founder | Mobile App Developer',
+        org: './localhost',
+        period: '2025 — Present',
         description:
-            'Delivered 8+ production-ready web applications across fintech, healthtech, and edtech sectors using React, FastAPI, and PostgreSQL.',
+            "Co-founded './localhost', a student-led venture creating expressive digital tools. Leading development of Forá time capsule app with focus on seamless integration and scalability.Leading the development of Forá – a time capsule messaging app that allows users to send messages to the future.",
     },
     {
         type: 'achievement',
-        title: 'National Hackathon — 1st Place',
-        org: 'TechFest 2024',
-        period: 'October 2024',
+        title: 'Aarambh Hackathon - Winner',
+        org: 'Vel Tech Rangarajan Dr. Sagunthala R & D Institute of Science & Technology, Chennai ',
+        period: 'November 2025',
         description:
-            'First place out of 400+ teams for building a real-time disaster response system combining computer vision with large language models.',
+            'First place for buliding Remo Rehab - a remote rehabilitation platform powered by the Gemini API for AI feedback, smart exercise suggestions, and automated patient report summaries - bridging the gap between doctors and patients.',
     },
     {
         type: 'certification',
-        title: 'Deep Learning Specialization',
-        org: 'DeepLearning.AI / Coursera',
-        period: '2023',
+        title: 'DATA ANALYTICS USING PANDAS',
+        org: 'Guvi Geek Networks, IITM Research Park',
+        period: 'Jan 2025',
         description:
-            '5-course specialization covering neural networks, CNNs, sequence models, and practical ML engineering from Andrew Ng.',
+            'Data Analytics fundamentals using pandas',
     },
 ]
 
@@ -150,7 +150,7 @@ function Hi({ children, color }: { children: React.ReactNode; color: string }) {
         <span
             style={{
                 backgroundColor: dark ? 'rgba(255,255,255,0.12)' : color,
-                color: dark ? '#E5E5EA' : '#1D1D1F',
+                color: dark ? '#FFFFFF' : '#1D1D1F',
             }}
             className="px-1.5 py-0.5 rounded-md font-semibold"
         >
@@ -928,21 +928,7 @@ function Hero() {
                 </motion.div>
             </div>
 
-            {/* Scroll hint */}
-            <motion.div
-                className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 2, duration: 0.8 }}
-            >
-                <span className="text-[10px] font-mono tracking-[0.15em] uppercase" style={{ color: dark ? 'rgba(200,200,210,0.5)' : 'rgba(29,29,31,0.5)' }}>scroll</span>
-                <motion.div
-                    className="w-px h-8"
-                    style={{ background: dark ? 'linear-gradient(to bottom, rgba(200,200,210,0.5), transparent)' : 'linear-gradient(to bottom, rgba(29,29,31,0.5), transparent)' }}
-                    animate={{ scaleY: [1, 0.4, 1], opacity: [0.6, 1, 0.6] }}
-                    transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-                />
-            </motion.div>
+
         </section>
     )
 }
@@ -1131,11 +1117,33 @@ function Resume() {
             <div className="max-w-6xl mx-auto px-6">
                 <FadeUp className="mb-16">
                     <SectionLabel>Journey</SectionLabel>
-                    <h2 className="font-display text-[48px] font-bold tracking-[-0.02em]" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>
-                        Experience &amp;
-                        <br />
-                        <em className="not-italic font-extralight" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>Education.</em>
-                    </h2>
+                    <div className="flex flex-wrap items-end justify-between gap-6">
+                        <h2 className="font-display text-[48px] font-bold tracking-[-0.02em]" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>
+                            Experience &amp;
+                            <br />
+                            <em className="not-italic font-extralight" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>Education.</em>
+                        </h2>
+                        <motion.a
+                            href="https://drive.google.com/file/d/1-qY9fbLdEfjMJSL01UFG_koLcNaRBEbY/view?usp=sharing"
+                            target="_blank"
+                            rel="noreferrer"
+                            whileHover={{ scale: 1.04, boxShadow: dark ? '0 8px 24px rgba(76,142,247,0.35)' : '0 8px 24px rgba(29,29,31,0.2)' }}
+                            whileTap={{ scale: 0.96 }}
+                            className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-[13px] font-semibold transition-shadow"
+                            style={{
+                                background: dark ? '#FFFFFF' : '#1D1D1F',
+                                color: dark ? '#0A0A0A' : '#FFFFFF',
+                            }}
+                        >
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                <polyline points="14 2 14 8 20 8" />
+                                <line x1="12" y1="18" x2="12" y2="12" />
+                                <line x1="9" y1="15" x2="15" y2="15" />
+                            </svg>
+                            View Resume
+                        </motion.a>
+                    </div>
                 </FadeUp>
                 <div className="max-w-[580px]">
                     {TIMELINE.map((item, i) => (
@@ -1146,6 +1154,7 @@ function Resume() {
         </section>
     )
 }
+
 
 // Portfolio 
 
