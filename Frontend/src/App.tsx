@@ -2,6 +2,8 @@ import {
     useState,
     useEffect,
     useRef,
+    useContext,
+    createContext,
     type FormEvent,
     type CSSProperties,
 } from 'react'
@@ -10,10 +12,15 @@ import {
     useInView,
     AnimatePresence,
     useScroll,
-    useTransform,
     useMotionValue,
     useSpring,
 } from 'framer-motion'
+
+// Theme Context
+const ThemeContext = createContext<{ dark: boolean; toggleDark: () => void }>({
+    dark: false,
+    toggleDark: () => {},
+})
 
 // Data 
 
@@ -39,7 +46,7 @@ const PROJECTS = [
         imgAlt: 'Cinema theater interior',
     },
     {
-        title: 'Remo ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Rehabilitation AI',
+        title: 'Remo — Rehabilitation AI',
         description:
             'AI physiotherapy assistant using MediaPipe pose estimation to guide patients through exercises with real-time biomechanical feedback.',
         tags: ['Python', 'MediaPipe', 'TensorFlow', 'React'],
@@ -57,7 +64,7 @@ const PROJECTS = [
         imgAlt: 'Pen resting on handwritten letter',
     },
     {
-        title: 'TruthSeeker ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Fake News AI',
+        title: 'TruthSeeker — Fake News AI',
         description:
             'Multi-modal misinformation detection combining NLP claim verification, source credibility scoring, and image forensics.',
         tags: ['Python', 'BERT', 'FastAPI', 'React', 'Claude API'],
@@ -72,7 +79,7 @@ const TIMELINE = [
         type: 'education',
         title: 'B.S. Computer Science',
         org: 'University of Technology',
-        period: '2022 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Present',
+        period: '2022 — Present',
         description:
             "Specializing in Artificial Intelligence and Machine Learning with a Mathematics minor. Dean's List three consecutive semesters.",
     },
@@ -88,13 +95,13 @@ const TIMELINE = [
         type: 'experience',
         title: 'Full Stack Developer',
         org: 'Freelance',
-        period: '2023 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Present',
+        period: '2023 — Present',
         description:
             'Delivered 8+ production-ready web applications across fintech, healthtech, and edtech sectors using React, FastAPI, and PostgreSQL.',
     },
     {
         type: 'achievement',
-        title: 'National Hackathon ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â 1st Place',
+        title: 'National Hackathon — 1st Place',
         org: 'TechFest 2024',
         period: 'October 2024',
         description:
@@ -138,8 +145,15 @@ const TYPE_STYLE: Record<string, { dot: string; badge: string; label: string }> 
 // Shared primitives 
 
 function Hi({ children, color }: { children: React.ReactNode; color: string }) {
+    const { dark } = useContext(ThemeContext)
     return (
-        <span style={{ backgroundColor: color, color: '#1D1D1F' }} className="px-1.5 py-0.5 rounded-md font-semibold">
+        <span
+            style={{
+                backgroundColor: dark ? 'rgba(255,255,255,0.12)' : color,
+                color: dark ? '#E5E5EA' : '#1D1D1F',
+            }}
+            className="px-1.5 py-0.5 rounded-md font-semibold"
+        >
             {children}
         </span>
     )
@@ -170,8 +184,12 @@ function FadeUp({
 }
 
 function SectionLabel({ children }: { children: string }) {
+    const { dark } = useContext(ThemeContext)
     return (
-        <span className="text-[11px] font-mono tracking-[0.22em] uppercase block mb-4" style={{ color: '#1D1D1F' }}>
+        <span
+            className="text-[11px] font-mono tracking-[0.22em] uppercase block mb-4"
+            style={{ color: dark ? '#A1A1A6' : '#1D1D1F' }}
+        >
             {children}
         </span>
     )
@@ -201,13 +219,16 @@ function Cursor() {
         }
     }, [x, y, visible])
 
+    const { dark } = useContext(ThemeContext)
     return (
         <motion.div
             className="fixed top-0 left-0 w-10 h-10 rounded-full pointer-events-none z-[200]"
             style={{
                 x: springX,
                 y: springY,
-                background: 'radial-gradient(circle, rgba(29,29,31,0.35) 0%, rgba(29,29,31,0.12) 60%, transparent 100%)',
+                background: dark
+                    ? 'radial-gradient(circle, rgba(200,200,210,0.3) 0%, rgba(200,200,210,0.08) 60%, transparent 100%)'
+                    : 'radial-gradient(circle, rgba(29,29,31,0.35) 0%, rgba(29,29,31,0.12) 60%, transparent 100%)',
                 filter: 'blur(4px)',
                 opacity: visible ? 1 : 0,
             }}
@@ -220,87 +241,265 @@ function Cursor() {
 function ScrollProgress() {
     const { scrollYProgress } = useScroll()
     const scaleX = useSpring(scrollYProgress, { stiffness: 200, damping: 30 })
+    const { dark } = useContext(ThemeContext)
     return (
         <motion.div
             className="fixed top-0 left-0 right-0 h-[2px] origin-left z-[60]"
             style={{
                 scaleX,
-                background: 'linear-gradient(to right, #1D1D1F, #6E6E73, #D2D2D7)',
+                background: dark
+                    ? 'linear-gradient(to right, #4C8EF7, #A78BFA, #F472B6)'
+                    : 'linear-gradient(to right, #1D1D1F, #6E6E73, #D2D2D7)',
             }}
         />
     )
 }
 
-// Neural Network animation 
+// Keyboard Illustration
 
-const NODES = [
-    { x: 50, y: 18 }, { x: 18, y: 40 }, { x: 82, y: 38 },
-    { x: 32, y: 65 }, { x: 68, y: 62 }, { x: 12, y: 72 },
-    { x: 88, y: 72 }, { x: 50, y: 82 },
-]
-const EDGES = [
-    [0, 1], [0, 2], [0, 4], [1, 3], [1, 5], [2, 4], [2, 6], [3, 7], [4, 7], [5, 3], [6, 7], [1, 4],
-]
-const NODE_COLORS = ['#1D1D1F', '#6E6E73', '#86868B', '#D2D2D7', '#6E6E73', '#1D1D1F', '#D2D2D7', '#86868B']
+type KeyAccent = 'orange' | 'dark' | 'space' | 'normal'
+interface KeyDef { k: string; u: number; accent?: KeyAccent }
 
-function NeuralNet() {
+const KB_ROWS: KeyDef[][] = [
+    [
+        { k: 'Esc', u: 1, accent: 'orange' },
+        { k: '1', u: 1 }, { k: '2', u: 1 }, { k: '3', u: 1 }, { k: '4', u: 1 },
+        { k: '5', u: 1 }, { k: '6', u: 1 }, { k: '7', u: 1 }, { k: '8', u: 1 },
+        { k: '9', u: 1 }, { k: '0', u: 1 }, { k: '-', u: 1 }, { k: '=', u: 1 },
+        { k: '⌫', u: 2, accent: 'dark' }, { k: 'Del', u: 1, accent: 'dark' },
+    ],
+    [
+        { k: 'Tab', u: 1.5, accent: 'dark' },
+        { k: 'Q', u: 1 }, { k: 'W', u: 1 }, { k: 'E', u: 1 }, { k: 'R', u: 1 },
+        { k: 'T', u: 1 }, { k: 'Y', u: 1 }, { k: 'U', u: 1 }, { k: 'I', u: 1 },
+        { k: 'O', u: 1 }, { k: 'P', u: 1 }, { k: '[', u: 1 }, { k: ']', u: 1 },
+        { k: '\\', u: 1.5 }, { k: 'PgUp', u: 1, accent: 'dark' },
+    ],
+    [
+        { k: 'Caps', u: 1.75, accent: 'dark' },
+        { k: 'A', u: 1 }, { k: 'S', u: 1 }, { k: 'D', u: 1 }, { k: 'F', u: 1 },
+        { k: 'G', u: 1 }, { k: 'H', u: 1 }, { k: 'J', u: 1 }, { k: 'K', u: 1 },
+        { k: 'L', u: 1 }, { k: ';', u: 1 }, { k: "'", u: 1 },
+        { k: 'Enter', u: 2.25, accent: 'orange' }, { k: 'PgDn', u: 1, accent: 'dark' },
+    ],
+    [
+        { k: 'Shift', u: 2.25, accent: 'dark' },
+        { k: 'Z', u: 1 }, { k: 'X', u: 1 }, { k: 'C', u: 1 }, { k: 'V', u: 1 },
+        { k: 'B', u: 1 }, { k: 'N', u: 1 }, { k: 'M', u: 1 }, { k: ',', u: 1 },
+        { k: '.', u: 1 }, { k: '/', u: 1 },
+        { k: 'Shift', u: 1.75, accent: 'dark' }, { k: '↑', u: 1, accent: 'orange' }, { k: 'End', u: 1, accent: 'dark' },
+    ],
+    [
+        { k: 'Ctrl', u: 1.5, accent: 'dark' }, { k: 'Win', u: 1, accent: 'dark' },
+        { k: 'Alt', u: 1.5, accent: 'dark' },
+        { k: '', u: 7, accent: 'space' },
+        { k: 'Alt', u: 1, accent: 'dark' }, { k: 'Fn', u: 1, accent: 'dark' },
+        { k: '←', u: 1, accent: 'orange' }, { k: '↓', u: 1, accent: 'orange' }, { k: '→', u: 1, accent: 'orange' },
+    ],
+]
+
+const KW = 26   // base key width px
+const KH = 28   // key height px
+const KG = 4    // gap px
+
+function kw(u: number) { return u * KW + (u - 1) * KG }
+
+function KeyboardIllustration() {
+    const { dark } = useContext(ThemeContext)
+    const [litKeys, setLitKeys] = useState<Set<string>>(new Set())
+
+    useEffect(() => {
+        // Key IDs for "A Rohan":
+        // Row 2, idx 1 = A | Row 4, idx 3 = Space | Row 1, idx 4 = R
+        // Row 1, idx 9 = O | Row 2, idx 6 = H | Row 3, idx 6 = N
+        // Row 3, idx 0 = Shift (lit with each capital)
+        const sequence: string[][] = [
+            ['3-0', '2-1'],  // Shift + A  (capital A)
+            [],              // pause between letters
+            ['4-3'],         // Space
+            [],              // pause
+            ['3-0', '1-4'],  // Shift + R  (capital R)
+            [],              // pause
+            ['1-9'],         // o
+            [],              // pause
+            ['2-6'],         // h
+            [],              // pause
+            ['2-1'],         // a
+            [],              // pause
+            ['3-6'],         // n
+            [],              // long pause before restart
+            [],
+            [],
+        ]
+        let step = 0
+        const iv = setInterval(() => {
+            const keys = sequence[step]
+            setLitKeys(new Set(keys))
+            if (keys.length > 0) setTimeout(() => setLitKeys(new Set()), 260)
+            step = (step + 1) % sequence.length
+        }, 380)
+        return () => clearInterval(iv)
+    }, [])
+
+    const getColors = (key: KeyDef, id: string) => {
+        const lit = litKeys.has(id)
+        if (lit) return {
+            bg: '#F97316',
+            text: '#fff',
+            shadow: `0 0 10px rgba(249,115,22,0.7), 0 3px 0 #92400E`,
+            yOff: 2,
+        }
+        if (key.accent === 'orange') return {
+            bg: dark ? '#C2410C' : '#EA580C',
+            text: '#fff',
+            shadow: `0 3px 0 ${dark ? '#7C2D12' : '#9A3412'}`,
+            yOff: 0,
+        }
+        if (key.accent === 'dark') return {
+            bg: dark ? '#222' : '#3C3C3C',
+            text: dark ? '#888' : '#999',
+            shadow: `0 3px 0 ${dark ? '#111' : '#1A1A1A'}`,
+            yOff: 0,
+        }
+        if (key.accent === 'space') return {
+            bg: dark ? '#2A2A2A' : '#3C3C3C',
+            text: '',
+            shadow: `0 3px 0 ${dark ? '#111' : '#1A1A1A'}`,
+            yOff: 0,
+        }
+        return {
+            bg: dark ? '#404040' : '#D6D6D6',
+            text: dark ? '#CCC' : '#2D2D2D',
+            shadow: `0 3px 0 ${dark ? '#1A1A1A' : '#A0A0A0'}`,
+            yOff: 0,
+        }
+    }
+
+    const bodyBg = dark
+        ? 'linear-gradient(160deg, #1C1C1C 0%, #0F0F0F 100%)'
+        : 'linear-gradient(160deg, #2D2D2D 0%, #1A1A1A 100%)'
+
     return (
-        <div className="relative w-full h-full flex items-center justify-center select-none">
-            {/* Ambient glow */}
-            <div
-                className="absolute inset-0 rounded-full"
-                style={{
-                    background: 'radial-gradient(circle at 50% 50%, rgba(29,29,31,0.18) 0%, transparent 70%)',
-                    filter: 'blur(32px)',
-                }}
-            />
-            <svg
-                viewBox="0 0 100 100"
-                className="w-full max-w-[420px] h-auto relative z-10"
-                style={{ filter: 'drop-shadow(0 0 40px rgba(29,29,31,0.25))' }}
-            >
-                {EDGES.map(([a, b], i) => (
-                    <motion.line
-                        key={i}
-                        x1={NODES[a].x} y1={NODES[a].y}
-                        x2={NODES[b].x} y2={NODES[b].y}
-                        stroke="rgba(29,29,31,0.35)"
-                        strokeWidth="0.4"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: [0.2, 0.7, 0.2] }}
-                        transition={{ duration: 3.5 + (i % 3), delay: i * 0.18, repeat: Infinity, ease: 'easeInOut' }}
-                    />
-                ))}
-                {NODES.map((node, i) => (
-                    <motion.circle
-                        key={i}
-                        cx={node.x} cy={node.y} r="2.8"
-                        fill={NODE_COLORS[i]}
-                        stroke="rgba(0,0,0,0.6)"
-                        strokeWidth="0.6"
-                        initial={{ scale: 0, opacity: 0 }}
-                        animate={{ scale: [1, 1.3, 1], opacity: [0.7, 1, 0.7] }}
-                        transition={{ duration: 2.8 + i * 0.25, delay: i * 0.14, repeat: Infinity, ease: 'easeInOut' }}
-                    />
-                ))}
-            </svg>
+        <div
+            style={{
+                perspective: '700px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '100%',
+                height: '100%',
+            }}
+        >
+            {/* Ambient glow under keyboard */}
+            <div style={{
+                position: 'absolute',
+                width: '80%',
+                height: '30%',
+                bottom: '10%',
+                left: '10%',
+                background: 'radial-gradient(ellipse, rgba(249,115,22,0.12) 0%, transparent 70%)',
+                filter: 'blur(20px)',
+                pointerEvents: 'none',
+            }} />
 
-            {[
-                { label: 'GPT-4o', top: '14%', left: '62%' },
-                { label: 'Vision', top: '56%', left: '4%' },
-                { label: 'BERT', top: '28%', left: '82%' },
-                { label: 'RL', top: '78%', left: '44%' },
-            ].map(({ label, top, left }, i) => (
-                <motion.span
-                    key={label}
-                    className="absolute text-[9px] font-mono tracking-wider z-10"
-                    style={{ top, left, color: 'rgba(29,29,31,0.6)' }}
-                    animate={{ opacity: [0.3, 0.8, 0.3], y: [0, -4, 0] }}
-                    transition={{ duration: 3.5 + i, repeat: Infinity, delay: i * 0.8, ease: 'easeInOut' }}
+            <motion.div
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+                style={{ transformStyle: 'preserve-3d' }}
+            >
+                <motion.div
+                    initial={{ opacity: 0, rotateX: 45, y: 40 }}
+                    animate={{ opacity: 1, rotateX: 18, rotateY: -6, y: 0 }}
+                    transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+                    style={{
+                        transformStyle: 'preserve-3d',
+                        background: bodyBg,
+                        borderRadius: '14px',
+                        padding: '14px 16px 18px',
+                        boxShadow: dark
+                            ? '0 50px 100px rgba(0,0,0,0.9), 0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.08)'
+                            : '0 50px 100px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.12)',
+                    }}
                 >
-                    {label}
-                </motion.span>
-            ))}
+                    {/* Top edge strip */}
+                    <div style={{
+                        height: '6px',
+                        marginBottom: '10px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'flex-end',
+                        gap: '4px',
+                        paddingRight: '4px',
+                    }}>
+                        {[...Array(3)].map((_, i) => (
+                            <motion.div
+                                key={i}
+                                animate={{ opacity: [0.4, 1, 0.4] }}
+                                transition={{ duration: 1.5, delay: i * 0.5, repeat: Infinity, ease: 'easeInOut' }}
+                                style={{
+                                    width: 5, height: 5, borderRadius: '50%',
+                                    backgroundColor: i === 0 ? '#F97316' : i === 1 ? '#22C55E' : '#3B82F6',
+                                }}
+                            />
+                        ))}
+                    </div>
+
+                    {/* Key rows */}
+                    {KB_ROWS.map((row, ri) => (
+                        <div
+                            key={ri}
+                            style={{ display: 'flex', gap: `${KG}px`, marginBottom: ri < KB_ROWS.length - 1 ? KG : 0 }}
+                        >
+                            {row.map((key, ki) => {
+                                const id = `${ri}-${ki}`
+                                const c = getColors(key, id)
+                                const width = kw(key.u)
+                                return (
+                                    <motion.div
+                                        key={ki}
+                                        animate={{ y: c.yOff }}
+                                        transition={{ duration: 0.08, ease: 'easeOut' }}
+                                        style={{
+                                            width,
+                                            height: KH,
+                                            flexShrink: 0,
+                                            backgroundColor: c.bg,
+                                            borderRadius: '4px',
+                                            boxShadow: c.shadow,
+                                            display: 'flex',
+                                            alignItems: 'flex-end',
+                                            justifyContent: 'center',
+                                            paddingBottom: '3px',
+                                            fontSize: key.u >= 1.5 ? '7px' : '8px',
+                                            fontFamily: 'monospace',
+                                            fontWeight: 700,
+                                            color: c.text,
+                                            userSelect: 'none',
+                                            cursor: 'default',
+                                            position: 'relative',
+                                            overflow: 'hidden',
+                                            transition: 'background-color 0.12s ease',
+                                        }}
+                                    >
+                                        {/* top sheen */}
+                                        <div style={{
+                                            position: 'absolute',
+                                            top: 0, left: 0, right: 0,
+                                            height: '45%',
+                                            background: 'linear-gradient(to bottom, rgba(255,255,255,0.14), transparent)',
+                                            borderRadius: '4px 4px 0 0',
+                                            pointerEvents: 'none',
+                                        }} />
+                                        <span style={{ position: 'relative', zIndex: 1, letterSpacing: '0.03em' }}>
+                                            {key.k}
+                                        </span>
+                                    </motion.div>
+                                )
+                            })}
+                        </div>
+                    ))}
+                </motion.div>
+            </motion.div>
         </div>
     )
 }
@@ -308,13 +507,17 @@ function NeuralNet() {
 // Animated background blobs 
 
 function Blobs() {
+    const { dark } = useContext(ThemeContext)
+    const colors = dark
+        ? ['rgba(76,142,247,0.08)', 'rgba(167,139,250,0.06)', 'rgba(244,114,182,0.07)']
+        : ['rgba(29,29,31,0.06)', 'rgba(29,29,31,0.04)', 'rgba(29,29,31,0.05)']
     return (
         <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden>
             {[
-                { w: 560, h: 560, top: '-8%', left: '55%', color: 'rgba(29,29,31,0.06)', dur: 22 },
-                { w: 480, h: 480, top: '50%', left: '-8%', color: 'rgba(29,29,31,0.04)', dur: 28 },
-                { w: 400, h: 400, top: '30%', left: '70%', color: 'rgba(29,29,31,0.05)', dur: 18 },
-            ].map(({ w, h, top, left, color, dur }, i) => (
+                { w: 560, h: 560, top: '-8%', left: '55%', dur: 22 },
+                { w: 480, h: 480, top: '50%', left: '-8%', dur: 28 },
+                { w: 400, h: 400, top: '30%', left: '70%', dur: 18 },
+            ].map(({ w, h, top, left, dur }, i) => (
                 <motion.div
                     key={i}
                     className="absolute rounded-full"
@@ -323,7 +526,7 @@ function Blobs() {
                         height: h,
                         top,
                         left,
-                        background: color,
+                        background: colors[i],
                         filter: 'blur(80px)',
                     }}
                     animate={{
@@ -361,6 +564,7 @@ function RevealWord({ word, delay }: { word: string; delay: number }) {
 // Navbar 
 
 function Navbar() {
+    const { dark, toggleDark } = useContext(ThemeContext)
     const [scrolled, setScrolled] = useState(false)
     const [menuOpen, setMenuOpen] = useState(false)
     const [active, setActive] = useState('Home')
@@ -377,6 +581,16 @@ function Navbar() {
         setMenuOpen(false)
     }
 
+    const navBg = scrolled
+        ? dark ? 'rgba(10,10,10,0.88)' : 'rgba(255,255,255,0.85)'
+        : 'transparent'
+    const navBorder = scrolled
+        ? dark ? '1px solid rgba(255,255,255,0.08)' : '1px solid #D2D2D7'
+        : '1px solid transparent'
+    const textColor = dark ? '#F5F5F7' : '#1D1D1F'
+    const subTextColor = dark ? '#8E8E93' : '#6E6E73'
+    const iconColor = dark ? '#6E6E73' : '#86868B'
+
     return (
         <motion.nav
             initial={{ y: -20, opacity: 0 }}
@@ -384,17 +598,17 @@ function Navbar() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
             style={{
-                backgroundColor: scrolled ? 'rgba(255,255,255,0.85)' : 'transparent',
+                backgroundColor: navBg,
                 backdropFilter: scrolled ? 'blur(20px)' : 'none',
                 WebkitBackdropFilter: scrolled ? 'blur(20px)' : 'none',
-                borderBottom: scrolled ? '1px solid #D2D2D7' : '1px solid transparent',
+                borderBottom: navBorder,
             }}
         >
             <div className="max-w-6xl mx-auto px-6 h-[60px] flex items-center justify-between">
                 <button
                     onClick={() => go('Home')}
                     className="font-display font-bold text-[18px] tracking-tight"
-                    style={{ color: '#1D1D1F' }}
+                    style={{ color: textColor }}
                 >
                     RAK
                 </button>
@@ -405,7 +619,7 @@ function Navbar() {
                             key={link}
                             onClick={() => go(link)}
                             className="text-[13px] font-medium transition-colors duration-200"
-                            style={{ color: active === link ? '#1D1D1F' : '#6E6E73' }}
+                            style={{ color: active === link ? textColor : subTextColor }}
                         >
                             {link}
                         </button>
@@ -413,33 +627,133 @@ function Navbar() {
                 </div>
 
                 <div className="hidden md:flex items-center gap-4">
-                    <a href="https://github.com/rohan-ak43" target="_blank" rel="noreferrer" className="transition-colors" style={{ color: '#86868B' }} aria-label="GitHub">
+                    <a href="https://github.com/rohan-ak43" target="_blank" rel="noreferrer" className="transition-colors" style={{ color: iconColor }} aria-label="GitHub">
                         <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
                         </svg>
                     </a>
-                    <a href="https://www.linkedin.com/in/arohancist/" target="_blank" rel="noreferrer" className="transition-colors" style={{ color: '#86868B' }} aria-label="LinkedIn">
+                    <a href="https://www.linkedin.com/in/arohancist/" target="_blank" rel="noreferrer" className="transition-colors" style={{ color: iconColor }} aria-label="LinkedIn">
                         <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
                         </svg>
                     </a>
-                    <a href="mailto:akrohan437@gmial.com" className="transition-colors" style={{ color: '#86868B' }} aria-label="Email">
+                    <a href="mailto:akrohan437@gmial.com" className="transition-colors" style={{ color: iconColor }} aria-label="Email">
                         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                             <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
                             <polyline points="22,6 12,13 2,6" />
                         </svg>
                     </a>
+
+                    {/* Dark mode toggle */}
+                    <motion.button
+                        id="theme-toggle"
+                        aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
+                        onClick={toggleDark}
+                        whileHover={{ scale: 1.12 }}
+                        whileTap={{ scale: 0.92 }}
+                        className="w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-200"
+                        style={{
+                            backgroundColor: dark ? 'rgba(255,255,255,0.08)' : 'rgba(29,29,31,0.07)',
+                            color: dark ? '#FBBF24' : '#6E6E73',
+                            border: dark ? '1px solid rgba(255,255,255,0.12)' : '1px solid rgba(29,29,31,0.12)',
+                        }}
+                    >
+                        <AnimatePresence mode="wait" initial={false}>
+                            {dark ? (
+                                <motion.svg
+                                    key="moon"
+                                    initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
+                                    animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                                    exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
+                                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                                    width="15" height="15" viewBox="0 0 24 24" fill="currentColor"
+                                >
+                                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                                </motion.svg>
+                            ) : (
+                                <motion.svg
+                                    key="sun"
+                                    initial={{ rotate: 90, opacity: 0, scale: 0.5 }}
+                                    animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                                    exit={{ rotate: -90, opacity: 0, scale: 0.5 }}
+                                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                                    width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                                >
+                                    <circle cx="12" cy="12" r="5" />
+                                    <line x1="12" y1="1" x2="12" y2="3" />
+                                    <line x1="12" y1="21" x2="12" y2="23" />
+                                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                                    <line x1="1" y1="12" x2="3" y2="12" />
+                                    <line x1="21" y1="12" x2="23" y2="12" />
+                                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                                </motion.svg>
+                            )}
+                        </AnimatePresence>
+                    </motion.button>
                 </div>
 
-                <button className="md:hidden p-1.5" style={{ color: '#1D1D1F' }} onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        {menuOpen ? (
-                            <><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></>
-                        ) : (
-                            <><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" /></>
-                        )}
-                    </svg>
-                </button>
+                <div className="md:hidden flex items-center gap-3">
+                    {/* Mobile dark mode toggle */}
+                    <motion.button
+                        id="theme-toggle-mobile"
+                        aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
+                        onClick={toggleDark}
+                        whileHover={{ scale: 1.12 }}
+                        whileTap={{ scale: 0.92 }}
+                        className="w-8 h-8 rounded-full flex items-center justify-center"
+                        style={{
+                            backgroundColor: dark ? 'rgba(255,255,255,0.08)' : 'rgba(29,29,31,0.07)',
+                            color: dark ? '#FBBF24' : '#6E6E73',
+                            border: dark ? '1px solid rgba(255,255,255,0.12)' : '1px solid rgba(29,29,31,0.12)',
+                        }}
+                    >
+                        <AnimatePresence mode="wait" initial={false}>
+                            {dark ? (
+                                <motion.svg
+                                    key="moon-m"
+                                    initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
+                                    animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                                    exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
+                                    transition={{ duration: 0.3 }}
+                                    width="15" height="15" viewBox="0 0 24 24" fill="currentColor"
+                                >
+                                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                                </motion.svg>
+                            ) : (
+                                <motion.svg
+                                    key="sun-m"
+                                    initial={{ rotate: 90, opacity: 0, scale: 0.5 }}
+                                    animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                                    exit={{ rotate: -90, opacity: 0, scale: 0.5 }}
+                                    transition={{ duration: 0.3 }}
+                                    width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                                >
+                                    <circle cx="12" cy="12" r="5" />
+                                    <line x1="12" y1="1" x2="12" y2="3" />
+                                    <line x1="12" y1="21" x2="12" y2="23" />
+                                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                                    <line x1="1" y1="12" x2="3" y2="12" />
+                                    <line x1="21" y1="12" x2="23" y2="12" />
+                                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                                </motion.svg>
+                            )}
+                        </AnimatePresence>
+                    </motion.button>
+
+                    <button className="p-1.5" style={{ color: textColor }} onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            {menuOpen ? (
+                                <><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></>
+                            ) : (
+                                <><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" /></>
+                            )}
+                        </svg>
+                    </button>
+                </div>
             </div>
 
             <AnimatePresence>
@@ -450,14 +764,20 @@ function Navbar() {
                         exit={{ opacity: 0, y: -8 }}
                         transition={{ duration: 0.18 }}
                         className="md:hidden backdrop-blur-xl px-6 pb-5 pt-1"
-                        style={{ backgroundColor: 'rgba(255,255,255,0.96)', borderBottom: '1px solid #D2D2D7' }}
+                        style={{
+                            backgroundColor: dark ? 'rgba(10,10,10,0.97)' : 'rgba(255,255,255,0.96)',
+                            borderBottom: dark ? '1px solid rgba(255,255,255,0.08)' : '1px solid #D2D2D7',
+                        }}
                     >
                         {NAV_LINKS.map((link) => (
                             <button
                                 key={link}
                                 onClick={() => go(link)}
                                 className="block w-full text-left py-3 text-sm font-medium"
-                                style={{ color: '#1D1D1F', borderBottom: '1px solid rgba(0,0,0,0.06)' }}
+                                style={{
+                                    color: textColor,
+                                    borderBottom: dark ? '1px solid rgba(255,255,255,0.06)' : '1px solid rgba(0,0,0,0.06)',
+                                }}
                             >
                                 {link}
                             </button>
@@ -474,8 +794,9 @@ function Navbar() {
 const HERO_WORDS = ['Hello,', "I'm", 'A Rohan.']
 
 function Hero() {
+    const { dark } = useContext(ThemeContext)
     return (
-        <section id="home" className="relative min-h-screen flex items-center pt-[60px] overflow-hidden" style={{ backgroundColor: '#F5F5F7' }}>
+        <section id="home" className="relative min-h-screen flex items-center pt-[60px] overflow-hidden" style={{ backgroundColor: dark ? '#0A0A0A' : '#F5F5F7' }}>
             <Blobs />
             <div className="relative z-10 max-w-6xl mx-auto px-6 py-28 w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 {/* Text */}
@@ -485,18 +806,21 @@ function Hero() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.3 }}
                         className="text-[11px] font-mono tracking-[0.22em] uppercase mb-7 flex items-center gap-2"
-                        style={{ color: '#1D1D1F' }}
+                        style={{ color: dark ? '#A1A1A6' : '#1D1D1F' }}
                     >
                         <motion.span
                             className="inline-block w-1.5 h-1.5 rounded-full"
-                            style={{ backgroundColor: '#1D1D1F', boxShadow: '0 0 6px rgba(29,29,31,0.8)' }}
+                            style={{
+                                backgroundColor: dark ? '#4ADE80' : '#1D1D1F',
+                                boxShadow: dark ? '0 0 6px rgba(74,222,128,0.8)' : '0 0 6px rgba(29,29,31,0.8)',
+                            }}
                             animate={{ scale: [1, 1.4, 1], opacity: [1, 0.6, 1] }}
                             transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
                         />
                         Available for opportunities
                     </motion.p>
 
-                    <h1 className="font-display text-[58px] md:text-[74px] lg:text-[84px] font-bold leading-[1.02] tracking-[-0.025em] mb-5" style={{ color: '#1D1D1F' }}>
+                    <h1 className="font-display text-[58px] md:text-[74px] lg:text-[84px] font-bold leading-[1.02] tracking-[-0.025em] mb-5" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>
                         {HERO_WORDS.map((word, i) => (
                             <span key={word} className="inline-block mr-[0.2em]">
                                 <RevealWord
@@ -505,7 +829,7 @@ function Hero() {
                                 />
                                 {i === 2 && (
                                     <motion.span
-                                        style={{ color: '#1D1D1F' }}
+                                        style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}
                                         className="not-italic font-extralight"
                                         initial={{ opacity: 0, y: 20, filter: 'blur(6px)' }}
                                         animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
@@ -523,9 +847,9 @@ function Hero() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.78 }}
                         className="text-[16px] font-medium mb-4 tracking-tight"
-                        style={{ color: '#6E6E73' }}
+                        style={{ color: dark ? '#8E8E93' : '#6E6E73' }}
                     >
-                        AI Engineer Ãƒâ€šÃ‚Â· Full Stack Developer Ãƒâ€šÃ‚Â· ML Enthusiast
+                        AI Engineer · Full Stack Developer · ML Enthusiast
                     </motion.p>
 
                     <motion.p
@@ -533,7 +857,7 @@ function Hero() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.88 }}
                         className="leading-relaxed mb-8 text-[15px] max-w-[500px]"
-                        style={{ color: '#6E6E73' }}
+                        style={{ color: dark ? '#8E8E93' : '#6E6E73' }}
                     >
                         Computer Science student building at the intersection of{' '}
                         <Hi color="rgba(29,29,31,0.18)">Machine Learning</Hi>,{' '}
@@ -557,7 +881,11 @@ function Hero() {
                         ].map(({ label, color }, i) => (
                             <motion.span
                                 key={label}
-                                style={{ backgroundColor: color, color: '#1D1D1F', border: '1px solid rgba(29,29,31,0.2)' }}
+                                style={{
+                                    backgroundColor: dark ? 'rgba(255,255,255,0.08)' : color,
+                                    color: dark ? '#D1D5DB' : '#1D1D1F',
+                                    border: dark ? '1px solid rgba(255,255,255,0.12)' : '1px solid rgba(29,29,31,0.2)',
+                                }}
                                 className="text-[11px] font-medium px-3 py-1.5 rounded-full"
                                 initial={{ opacity: 0, scale: 0.85 }}
                                 animate={{ opacity: 1, scale: 1 }}
@@ -575,11 +903,14 @@ function Hero() {
                         className="flex gap-3 flex-wrap"
                     >
                         <motion.button
-                            whileHover={{ scale: 1.04, boxShadow: '0 8px 24px rgba(29,29,31,0.25)' }}
+                            whileHover={{ scale: 1.04, boxShadow: dark ? '0 8px 24px rgba(76,142,247,0.35)' : '0 8px 24px rgba(29,29,31,0.25)' }}
                             whileTap={{ scale: 0.96 }}
                             onClick={() => document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' })}
                             className="px-7 py-3.5 rounded-full text-[13px] font-semibold shadow-sm transition-shadow"
-                            style={{ background: '#1D1D1F', color: '#FFFFFF' }}
+                            style={{
+                                background: dark ? 'linear-gradient(135deg, #4C8EF7, #7C3AED)' : '#1D1D1F',
+                                color: '#FFFFFF',
+                            }}
                         >
                             View Projects
                         </motion.button>
@@ -593,7 +924,7 @@ function Hero() {
                     transition={{ duration: 1.2, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
                     className="hidden lg:flex items-center justify-center h-[500px]"
                 >
-                    <NeuralNet />
+                    <KeyboardIllustration />
                 </motion.div>
             </div>
 
@@ -604,10 +935,10 @@ function Hero() {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 2, duration: 0.8 }}
             >
-                <span className="text-[10px] font-mono tracking-[0.15em] uppercase" style={{ color: 'rgba(29,29,31,0.5)' }}>scroll</span>
+                <span className="text-[10px] font-mono tracking-[0.15em] uppercase" style={{ color: dark ? 'rgba(200,200,210,0.5)' : 'rgba(29,29,31,0.5)' }}>scroll</span>
                 <motion.div
                     className="w-px h-8"
-                    style={{ background: 'linear-gradient(to bottom, rgba(29,29,31,0.5), transparent)' }}
+                    style={{ background: dark ? 'linear-gradient(to bottom, rgba(200,200,210,0.5), transparent)' : 'linear-gradient(to bottom, rgba(29,29,31,0.5), transparent)' }}
                     animate={{ scaleY: [1, 0.4, 1], opacity: [0.6, 1, 0.6] }}
                     transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
                 />
@@ -619,27 +950,71 @@ function Hero() {
 // About 
 
 const ABOUT_CARDS = [
-    { icon: 'ÃƒÂ°Ã…Â¸Ã…Â½Ã¢â‚¬Å“', title: 'Education', text: "B.S. Computer Science, AI/ML specialization. Dean's List 3 consecutive semesters.", accent: 'rgba(29,29,31,0.12)' },
-    { icon: 'ÃƒÂ¢Ã…Â¡Ã‚Â¡', title: 'Experience', text: 'AI Research Intern at DataSynth Labs. Freelance full-stack engineer for 3+ years.', accent: 'rgba(29,29,31,0.12)' },
-    { icon: 'ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â¬', title: 'Research', text: 'Co-authored papers on document understanding and pose estimation for rehabilitation.', accent: 'rgba(29,29,31,0.12)' },
-    { icon: 'ÃƒÂ°Ã…Â¸Ã…â€™Ã‚Â', title: 'Interests', text: 'Generative AI, robotics, open-source contribution, and developer tooling.', accent: 'rgba(134,134,139,0.12)' },
+    {
+        svg: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                <path d="M6 12v5c3.33 1.67 8.67 1.67 12 0v-5" />
+            </svg>
+        ),
+        title: 'Education',
+        text: "B.S. Computer Science, AI/ML specialization. Dean's List 3 consecutive semesters.",
+        accent: 'rgba(29,29,31,0.12)',
+    },
+    {
+        svg: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+                <rect x="2" y="3" width="20" height="14" rx="2" />
+                <path d="M8 21h8M12 17v4" />
+            </svg>
+        ),
+        title: 'Experience',
+        text: 'AI Research Intern at DataSynth Labs. Freelance full-stack engineer for 3+ years.',
+        accent: 'rgba(29,29,31,0.12)',
+    },
+    {
+        svg: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+                <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v11m0 0H5m4 0h4m6-11v11m0 0h-4m4 0H5" />
+                <path d="M3 9h18" />
+                <circle cx="12" cy="16" r="3" />
+                <path d="M12 19v2" />
+            </svg>
+        ),
+        title: 'Research',
+        text: 'Co-authored papers on document understanding and pose estimation for rehabilitation.',
+        accent: 'rgba(29,29,31,0.12)',
+    },
+    {
+        svg: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+                <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                <path d="M2 17l10 5 10-5" />
+                <path d="M2 12l10 5 10-5" />
+            </svg>
+        ),
+        title: 'Interests',
+        text: 'Generative AI, robotics, open-source contribution, and developer tooling.',
+        accent: 'rgba(134,134,139,0.12)',
+    },
 ]
 
 function About() {
+    const { dark } = useContext(ThemeContext)
     return (
-        <section id="about" className="py-32" style={{ backgroundColor: '#FFFFFF' }}>
+        <section id="about" className="py-32" style={{ backgroundColor: dark ? '#111111' : '#FFFFFF' }}>
             <div className="max-w-6xl mx-auto px-6">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 mb-20">
                     <FadeUp>
                         <SectionLabel>About Me</SectionLabel>
-                        <h2 className="font-display text-[48px] md:text-[56px] font-bold leading-tight tracking-[-0.02em]" style={{ color: '#1D1D1F' }}>
+                        <h2 className="font-display text-[48px] md:text-[56px] font-bold leading-tight tracking-[-0.02em]" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>
                             Turning ideas into
                             <br />
-                            <em className="not-italic font-extralight" style={{ color: '#1D1D1F' }}>intelligent systems.</em>
+                            <em className="not-italic font-extralight" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>intelligent systems.</em>
                         </h2>
                     </FadeUp>
                     <FadeUp delay={0.1}>
-                        <div className="pt-10 space-y-4 leading-relaxed text-[15px]" style={{ color: '#6E6E73' }}>
+                        <div className="pt-10 space-y-4 leading-relaxed text-[15px]" style={{ color: dark ? '#8E8E93' : '#6E6E73' }}>
                             <p>
                                 I'm a Computer Science student with a deep curiosity for how machines learn. Over
                                 the last three years I've built everything from real-time computer vision pipelines
@@ -647,7 +1022,7 @@ function About() {
                             </p>
                             <p>
                                 My work lives at the intersection of <Hi color="rgba(29,29,31,0.18)">AI research</Hi> and{' '}
-                                <Hi color="rgba(29,29,31,0.18)">practical engineering</Hi> ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â I care about systems that are not
+                                <Hi color="rgba(29,29,31,0.18)">practical engineering</Hi> — I care about systems that are not
                                 just theoretically elegant but actually useful in the real world.
                             </p>
                             <p>
@@ -663,21 +1038,27 @@ function About() {
                     {ABOUT_CARDS.map((card, i) => (
                         <FadeUp key={card.title} delay={i * 0.09}>
                             <motion.div
-                                whileHover={{ y: -6, boxShadow: '0 20px 48px rgba(0,0,0,0.08)' }}
+                                whileHover={{ y: -6, boxShadow: dark ? '0 20px 48px rgba(0,0,0,0.4)' : '0 20px 48px rgba(0,0,0,0.08)' }}
                                 transition={{ duration: 0.2 }}
                                 className="rounded-2xl p-6 h-full cursor-default"
-                                style={{ backgroundColor: '#FFFFFF', border: '1px solid #E5E5EA' }}
+                                style={{
+                                    backgroundColor: dark ? '#1A1A1A' : '#FFFFFF',
+                                    border: dark ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E5EA',
+                                }}
                             >
                                 <div
-                                    style={{ backgroundColor: card.accent }}
-                                    className="w-10 h-10 rounded-xl flex items-center justify-center text-[18px] mb-4"
+                                    style={{
+                                        backgroundColor: dark ? 'rgba(255,255,255,0.08)' : card.accent,
+                                        color: dark ? '#A1A1A6' : '#1D1D1F',
+                                    }}
+                                    className="w-10 h-10 rounded-xl flex items-center justify-center mb-4"
                                 >
-                                    {card.icon}
+                                    {card.svg}
                                 </div>
-                                <h3 className="font-display font-semibold mb-2 text-[15px]" style={{ color: '#1D1D1F' }}>
+                                <h3 className="font-display font-semibold mb-2 text-[15px]" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>
                                     {card.title}
                                 </h3>
-                                <p className="text-[13px] leading-relaxed" style={{ color: '#6E6E73' }}>{card.text}</p>
+                                <p className="text-[13px] leading-relaxed" style={{ color: dark ? '#8E8E93' : '#6E6E73' }}>{card.text}</p>
                             </motion.div>
                         </FadeUp>
                     ))}
@@ -690,9 +1071,12 @@ function About() {
 // Resume 
 
 function TimelineItem({ item, index }: { item: (typeof TIMELINE)[0]; index: number }) {
+    const { dark } = useContext(ThemeContext)
     const ref = useRef(null)
     const inView = useInView(ref, { once: true, margin: '-60px' })
     const style = TYPE_STYLE[item.type]
+    const dotColor = dark ? '#4C8EF7' : style.dot
+    const badgeColor = dark ? 'rgba(76,142,247,0.18)' : style.badge
 
     return (
         <motion.div
@@ -704,7 +1088,7 @@ function TimelineItem({ item, index }: { item: (typeof TIMELINE)[0]; index: numb
         >
             <div className="flex flex-col items-center">
                 <motion.div
-                    style={{ backgroundColor: style.dot, boxShadow: `0 0 0 4px ${style.badge}` }}
+                    style={{ backgroundColor: dotColor, boxShadow: `0 0 0 4px ${badgeColor}` }}
                     className="w-3 h-3 rounded-full mt-1.5 shrink-0"
                     initial={{ scale: 0 }}
                     animate={inView ? { scale: 1 } : {}}
@@ -713,7 +1097,7 @@ function TimelineItem({ item, index }: { item: (typeof TIMELINE)[0]; index: numb
                 {index < TIMELINE.length - 1 && (
                     <motion.div
                         className="w-px flex-1 mt-2"
-                        style={{ backgroundColor: '#D2D2D7' }}
+                        style={{ backgroundColor: dark ? 'rgba(255,255,255,0.1)' : '#D2D2D7' }}
                         initial={{ scaleY: 0, originY: 0 }}
                         animate={inView ? { scaleY: 1 } : {}}
                         transition={{ duration: 0.5, delay: index * 0.07 + 0.3 }}
@@ -723,33 +1107,34 @@ function TimelineItem({ item, index }: { item: (typeof TIMELINE)[0]; index: numb
             <div className="pb-10">
                 <div className="flex flex-wrap items-center gap-2.5 mb-1.5">
                     <span
-                        style={{ backgroundColor: style.badge, color: '#1D1D1F' }}
+                        style={{ backgroundColor: badgeColor, color: dark ? '#93C5FD' : '#1D1D1F' }}
                         className="text-[11px] font-medium px-2.5 py-0.5 rounded-full"
                     >
                         {style.label}
                     </span>
-                    <span className="text-[11px] font-mono" style={{ color: '#86868B' }}>{item.period}</span>
+                    <span className="text-[11px] font-mono" style={{ color: dark ? '#6E6E73' : '#86868B' }}>{item.period}</span>
                 </div>
-                <h3 className="font-display font-semibold text-[17px] leading-tight" style={{ color: '#1D1D1F' }}>
+                <h3 className="font-display font-semibold text-[17px] leading-tight" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>
                     {item.title}
                 </h3>
-                <p className="text-[13px] font-medium mb-2 mt-0.5" style={{ color: '#1D1D1F' }}>{item.org}</p>
-                <p className="text-[13px] leading-relaxed" style={{ color: '#6E6E73' }}>{item.description}</p>
+                <p className="text-[13px] font-medium mb-2 mt-0.5" style={{ color: dark ? '#A1A1A6' : '#1D1D1F' }}>{item.org}</p>
+                <p className="text-[13px] leading-relaxed" style={{ color: dark ? '#8E8E93' : '#6E6E73' }}>{item.description}</p>
             </div>
         </motion.div>
     )
 }
 
 function Resume() {
+    const { dark } = useContext(ThemeContext)
     return (
-        <section id="resume" className="py-32" style={{ backgroundColor: '#F5F5F7' }}>
+        <section id="resume" className="py-32" style={{ backgroundColor: dark ? '#0A0A0A' : '#F5F5F7' }}>
             <div className="max-w-6xl mx-auto px-6">
                 <FadeUp className="mb-16">
                     <SectionLabel>Journey</SectionLabel>
-                    <h2 className="font-display text-[48px] font-bold tracking-[-0.02em]" style={{ color: '#1D1D1F' }}>
+                    <h2 className="font-display text-[48px] font-bold tracking-[-0.02em]" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>
                         Experience &amp;
                         <br />
-                        <em className="not-italic font-extralight" style={{ color: '#1D1D1F' }}>Education.</em>
+                        <em className="not-italic font-extralight" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>Education.</em>
                     </h2>
                 </FadeUp>
                 <div className="max-w-[580px]">
@@ -765,6 +1150,7 @@ function Resume() {
 // Portfolio 
 
 function ProjectCard({ project, index }: { project: (typeof PROJECTS)[0]; index: number }) {
+    const { dark } = useContext(ThemeContext)
     const ref = useRef(null)
     const inView = useInView(ref, { once: true, margin: '-60px' })
     const [hovered, setHovered] = useState(false)
@@ -779,10 +1165,13 @@ function ProjectCard({ project, index }: { project: (typeof PROJECTS)[0]; index:
             <motion.div
                 onHoverStart={() => setHovered(true)}
                 onHoverEnd={() => setHovered(false)}
-                whileHover={{ y: -8, boxShadow: '0 20px 48px rgba(0,0,0,0.1)' }}
+                whileHover={{ y: -8, boxShadow: dark ? '0 20px 48px rgba(0,0,0,0.5)' : '0 20px 48px rgba(0,0,0,0.1)' }}
                 transition={{ duration: 0.25 }}
                 className="group rounded-2xl overflow-hidden transition-shadow duration-300 h-full flex flex-col"
-                style={{ backgroundColor: '#FFFFFF', border: '1px solid #E5E5EA' }}
+                style={{
+                    backgroundColor: dark ? '#1A1A1A' : '#FFFFFF',
+                    border: dark ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E5EA',
+                }}
             >
                 {/* Image */}
                 <div className="h-48 overflow-hidden relative" style={{ backgroundColor: project.accent }}>
@@ -796,25 +1185,31 @@ function ProjectCard({ project, index }: { project: (typeof PROJECTS)[0]; index:
                     <div
                         className="absolute inset-0 transition-opacity duration-300"
                         style={{
-                            background: `linear-gradient(to bottom, transparent 40%, rgba(255,255,255,0.85) 100%)`,
+                            background: dark
+                                ? `linear-gradient(to bottom, transparent 40%, rgba(26,26,26,0.9) 100%)`
+                                : `linear-gradient(to bottom, transparent 40%, rgba(255,255,255,0.85) 100%)`,
                             opacity: hovered ? 0.8 : 0.4,
                         }}
                     />
-                    <span className="absolute bottom-3 right-4 font-display font-black text-[28px] leading-none select-none" style={{ color: 'rgba(29,29,31,0.3)' }}>
+                    <span className="absolute bottom-3 right-4 font-display font-black text-[28px] leading-none select-none" style={{ color: dark ? 'rgba(255,255,255,0.2)' : 'rgba(29,29,31,0.3)' }}>
                         {String(index + 1).padStart(2, '0')}
                     </span>
                 </div>
 
                 {/* Content */}
                 <div className="p-6 flex flex-col flex-1">
-                    <h3 className="font-display font-bold text-[16px] mb-2" style={{ color: '#1D1D1F' }}>{project.title}</h3>
-                    <p className="text-[13px] leading-relaxed mb-4 flex-1" style={{ color: '#6E6E73' }}>{project.description}</p>
+                    <h3 className="font-display font-bold text-[16px] mb-2" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>{project.title}</h3>
+                    <p className="text-[13px] leading-relaxed mb-4 flex-1" style={{ color: dark ? '#8E8E93' : '#6E6E73' }}>{project.description}</p>
                     <div className="flex flex-wrap gap-1.5 mb-5">
                         {project.tags.map((tag) => (
                             <span
                                 key={tag}
                                 className="text-[11px] px-2.5 py-1 rounded-lg"
-                                style={{ backgroundColor: '#F5F5F7', color: '#1D1D1F', border: '1px solid #D2D2D7' }}
+                                style={{
+                                    backgroundColor: dark ? 'rgba(255,255,255,0.06)' : '#F5F5F7',
+                                    color: dark ? '#A1A1A6' : '#1D1D1F',
+                                    border: dark ? '1px solid rgba(255,255,255,0.1)' : '1px solid #D2D2D7',
+                                }}
                             >
                                 {tag}
                             </span>
@@ -824,14 +1219,18 @@ function ProjectCard({ project, index }: { project: (typeof PROJECTS)[0]; index:
                         <motion.button
                             whileTap={{ scale: 0.95 }}
                             className="flex-1 text-center text-[12px] font-medium py-2.5 rounded-xl transition-colors"
-                            style={{ background: '#1D1D1F', color: '#FFFFFF' }}
+                            style={{ background: dark ? 'linear-gradient(135deg, #4C8EF7, #7C3AED)' : '#1D1D1F', color: '#FFFFFF' }}
                         >
                             GitHub
                         </motion.button>
                         <motion.button
                             whileTap={{ scale: 0.95 }}
                             className="flex-1 text-center text-[12px] font-medium py-2.5 rounded-xl transition-colors"
-                            style={{ border: '1px solid #D2D2D7', color: '#1D1D1F', backgroundColor: 'transparent' }}
+                            style={{
+                                border: dark ? '1px solid rgba(255,255,255,0.12)' : '1px solid #D2D2D7',
+                                color: dark ? '#D1D5DB' : '#1D1D1F',
+                                backgroundColor: 'transparent',
+                            }}
                         >
                             Live Demo
                         </motion.button>
@@ -843,15 +1242,16 @@ function ProjectCard({ project, index }: { project: (typeof PROJECTS)[0]; index:
 }
 
 function Portfolio() {
+    const { dark } = useContext(ThemeContext)
     return (
-        <section id="portfolio" className="py-32" style={{ backgroundColor: '#FFFFFF' }}>
+        <section id="portfolio" className="py-32" style={{ backgroundColor: dark ? '#111111' : '#FFFFFF' }}>
             <div className="max-w-6xl mx-auto px-6">
                 <FadeUp className="mb-16">
                     <SectionLabel>Work</SectionLabel>
-                    <h2 className="font-display text-[48px] font-bold tracking-[-0.02em]" style={{ color: '#1D1D1F' }}>
+                    <h2 className="font-display text-[48px] font-bold tracking-[-0.02em]" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>
                         Selected
                         <br />
-                        <em className="not-italic font-extralight" style={{ color: '#1D1D1F' }}>Projects.</em>
+                        <em className="not-italic font-extralight" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>Projects.</em>
                     </h2>
                 </FadeUp>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -867,28 +1267,35 @@ function Portfolio() {
 // Skills 
 
 function Skills() {
+    const { dark } = useContext(ThemeContext)
     return (
-        <section id="skills" className="py-32" style={{ backgroundColor: '#F5F5F7' }}>
+        <section id="skills" className="py-32" style={{ backgroundColor: dark ? '#0A0A0A' : '#F5F5F7' }}>
             <div className="max-w-6xl mx-auto px-6">
                 <FadeUp className="mb-16">
                     <SectionLabel>Toolkit</SectionLabel>
-                    <h2 className="font-display text-[48px] font-bold tracking-[-0.02em]" style={{ color: '#1D1D1F' }}>
+                    <h2 className="font-display text-[48px] font-bold tracking-[-0.02em]" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>
                         Skills &amp;
                         <br />
-                        <em className="not-italic font-extralight" style={{ color: '#1D1D1F' }}>Technologies.</em>
+                        <em className="not-italic font-extralight" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>Technologies.</em>
                     </h2>
                 </FadeUp>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {Object.entries(SKILLS_DATA).map(([category, skills], i) => (
                         <FadeUp key={category} delay={i * 0.07}>
                             <motion.div
-                                whileHover={{ y: -4, boxShadow: '0 16px 40px rgba(0,0,0,0.06)' }}
+                                whileHover={{ y: -4, boxShadow: dark ? '0 16px 40px rgba(0,0,0,0.4)' : '0 16px 40px rgba(0,0,0,0.06)' }}
                                 transition={{ duration: 0.18 }}
                                 className="rounded-2xl p-6"
-                                style={{ backgroundColor: '#FFFFFF', border: '1px solid #E5E5EA' }}
+                                style={{
+                                    backgroundColor: dark ? '#1A1A1A' : '#FFFFFF',
+                                    border: dark ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E5EA',
+                                }}
                             >
                                 <span
-                                    style={{ backgroundColor: SKILL_ACCENTS[category], color: '#1D1D1F' }}
+                                    style={{
+                                        backgroundColor: dark ? 'rgba(76,142,247,0.15)' : SKILL_ACCENTS[category],
+                                        color: dark ? '#93C5FD' : '#1D1D1F',
+                                    }}
                                     className="inline-block text-[11px] font-medium px-3 py-1 rounded-full mb-4"
                                 >
                                     {category}
@@ -897,10 +1304,14 @@ function Skills() {
                                     {skills.map((skill) => (
                                         <motion.span
                                             key={skill}
-                                            whileHover={{ backgroundColor: SKILL_ACCENTS[category], scale: 1.05 }}
+                                            whileHover={{ backgroundColor: dark ? 'rgba(76,142,247,0.15)' : SKILL_ACCENTS[category], scale: 1.05 }}
                                             transition={{ duration: 0.15 }}
                                             className="text-[12px] px-3 py-1.5 rounded-lg cursor-default"
-                                            style={{ color: '#515154', backgroundColor: '#F5F5F7', border: '1px solid #E5E5EA' }}
+                                            style={{
+                                                color: dark ? '#A1A1A6' : '#515154',
+                                                backgroundColor: dark ? 'rgba(255,255,255,0.05)' : '#F5F5F7',
+                                                border: dark ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E5EA',
+                                            }}
                                         >
                                             {skill}
                                         </motion.span>
@@ -918,6 +1329,7 @@ function Skills() {
 // Contact 
 
 function Contact() {
+    const { dark } = useContext(ThemeContext)
     const [form, setForm] = useState({ name: '', email: '', message: '' })
     const [sent, setSent] = useState(false)
 
@@ -932,23 +1344,23 @@ function Contact() {
         'w-full px-4 py-3.5 rounded-xl text-[14px] focus:outline-none transition-all duration-200'
 
     const inputStyle = {
-        backgroundColor: '#FFFFFF',
-        border: '1px solid #D2D2D7',
-        color: '#1D1D1F',
+        backgroundColor: dark ? '#1A1A1A' : '#FFFFFF',
+        border: dark ? '1px solid rgba(255,255,255,0.1)' : '1px solid #D2D2D7',
+        color: dark ? '#F5F5F7' : '#1D1D1F',
     }
 
     return (
-        <section id="contact" className="py-32" style={{ backgroundColor: '#FFFFFF' }}>
+        <section id="contact" className="py-32" style={{ backgroundColor: dark ? '#111111' : '#FFFFFF' }}>
             <div className="max-w-6xl mx-auto px-6">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
                     <FadeUp>
                         <SectionLabel>Say Hello</SectionLabel>
-                        <h2 className="font-display text-[48px] font-bold tracking-[-0.02em] mb-6" style={{ color: '#1D1D1F' }}>
+                        <h2 className="font-display text-[48px] font-bold tracking-[-0.02em] mb-6" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>
                             {"Let's build"}
                             <br />
-                            <em className="not-italic font-extralight" style={{ color: '#1D1D1F' }}>something great.</em>
+                            <em className="not-italic font-extralight" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>something great.</em>
                         </h2>
-                        <p className="leading-relaxed mb-10 text-[15px]" style={{ color: '#6E6E73' }}>
+                        <p className="leading-relaxed mb-10 text-[15px]" style={{ color: dark ? '#8E8E93' : '#6E6E73' }}>
                             I'm always open to new challenges, collaborations, and opportunities. Whether you
                             have a project in mind or just want to talk about AI, drop me a message.
                         </p>
@@ -993,10 +1405,10 @@ function Contact() {
                                     href: undefined,
                                 },
                             ].map(({ icon, label, href }) => (
-                                <div key={label} className="flex items-center gap-3" style={{ color: '#6E6E73' }}>
+                                <div key={label} className="flex items-center gap-3" style={{ color: dark ? '#8E8E93' : '#6E6E73' }}>
                                     <span className="w-5 flex items-center justify-center flex-shrink-0">{icon}</span>
                                     {href ? (
-                                        <a href={href} className="text-[13px] transition-colors hover:text-gray-900">
+                                        <a href={href} className="text-[13px] transition-colors" style={{ color: 'inherit' }}>
                                             {label}
                                         </a>
                                     ) : (
@@ -1010,7 +1422,7 @@ function Contact() {
                     <FadeUp delay={0.15}>
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div>
-                                <label className="block text-[13px] font-medium mb-2" style={{ color: '#515154' }}>Name</label>
+                                <label className="block text-[13px] font-medium mb-2" style={{ color: dark ? '#A1A1A6' : '#515154' }}>Name</label>
                                 <input
                                     type="text"
                                     value={form.name}
@@ -1022,7 +1434,7 @@ function Contact() {
                                 />
                             </div>
                             <div>
-                                <label className="block text-[13px] font-medium mb-2" style={{ color: '#515154' }}>Email</label>
+                                <label className="block text-[13px] font-medium mb-2" style={{ color: dark ? '#A1A1A6' : '#515154' }}>Email</label>
                                 <input
                                     type="email"
                                     value={form.email}
@@ -1034,7 +1446,7 @@ function Contact() {
                                 />
                             </div>
                             <div>
-                                <label className="block text-[13px] font-medium mb-2" style={{ color: '#515154' }}>Message</label>
+                                <label className="block text-[13px] font-medium mb-2" style={{ color: dark ? '#A1A1A6' : '#515154' }}>Message</label>
                                 <textarea
                                     value={form.message}
                                     onChange={(e) => setForm({ ...form, message: e.target.value })}
@@ -1059,7 +1471,12 @@ function Contact() {
                                         : { background: '#1D1D1F', color: '#000000' }
                                     }
                                 >
-                                    {sent ? 'ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“ Message Sent!' : 'Send Message'}
+                                    {sent ? (
+                                        <span className="flex items-center justify-center gap-2">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4"><polyline points="20 6 9 17 4 12" /></svg>
+                                            Message Sent
+                                        </span>
+                                    ) : 'Send Message'}
                                 </motion.button>
                             </AnimatePresence>
                         </form>
@@ -1073,10 +1490,17 @@ function Contact() {
 // Footer 
 
 function Footer() {
+    const { dark } = useContext(ThemeContext)
     return (
-        <footer className="py-8" style={{ backgroundColor: '#F5F5F7', borderTop: '1px solid rgba(29,29,31,0.12)' }}>
+        <footer
+            className="py-8"
+            style={{
+                backgroundColor: dark ? '#0A0A0A' : '#F5F5F7',
+                borderTop: dark ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(29,29,31,0.12)',
+            }}
+        >
             <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <p className="text-[12px]" style={{ color: '#86868B' }}>
+                <p className="text-[12px]" style={{ color: dark ? '#6E6E73' : '#86868B' }}>
                     Designed &amp; Developed by A Rohan &middot; &copy; 2026
                 </p>
                 <div className="flex items-center gap-6">
@@ -1088,8 +1512,8 @@ function Footer() {
                         <a
                             key={label}
                             href={href}
-                            className="text-[11px] font-mono tracking-wide transition-colors hover:text-gray-900"
-                            style={{ color: '#86868B' }}
+                            className="text-[11px] font-mono tracking-wide transition-colors"
+                            style={{ color: dark ? '#6E6E73' : '#86868B' }}
                         >
                             {label}
                         </a>
@@ -1103,22 +1527,32 @@ function Footer() {
 // App 
 
 export default function App() {
+    const [dark, setDark] = useState(false)
+    const toggleDark = () => setDark((d) => !d)
+
     return (
-        <div
-            className="min-h-screen font-sans"
-            style={{ backgroundColor: '#F5F5F7', WebkitFontSmoothing: 'antialiased', MozOsxFontSmoothing: 'grayscale' } as CSSProperties}
-        >
-            <Cursor />
-            <ScrollProgress />
-            <Navbar />
-            <Hero />
-            <About />
-            <Resume />
-            <Portfolio />
-            <Skills />
-            <Contact />
-            <Footer />
-        </div>
+        <ThemeContext.Provider value={{ dark, toggleDark }}>
+            <div
+                className="min-h-screen font-sans"
+                style={{
+                    backgroundColor: dark ? '#0A0A0A' : '#F5F5F7',
+                    WebkitFontSmoothing: 'antialiased',
+                    MozOsxFontSmoothing: 'grayscale',
+                    transition: 'background-color 0.4s ease',
+                } as CSSProperties}
+            >
+                <Cursor />
+                <ScrollProgress />
+                <Navbar />
+                <Hero />
+                <About />
+                <Resume />
+                <Portfolio />
+                <Skills />
+                <Contact />
+                <Footer />
+            </div>
+        </ThemeContext.Provider>
     )
 }
 
