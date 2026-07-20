@@ -144,15 +144,21 @@ const TYPE_STYLE: Record<string, { dot: string; badge: string; label: string }> 
 
 // Shared primitives 
 
-function Hi({ children, color }: { children: React.ReactNode; color: string }) {
+function Hi({ children }: { children: React.ReactNode; color?: string }) {
     const { dark } = useContext(ThemeContext)
     return (
         <span
             style={{
-                backgroundColor: dark ? 'rgba(255,255,255,0.12)' : color,
-                color: dark ? '#FFFFFF' : '#1D1D1F',
+                color: dark ? '#F5F5F7' : '#1D1D1F',
+                transition: 'color 0.3s ease, font-weight 0.3s ease',
             }}
-            className="px-1.5 py-0.5 rounded-md font-semibold"
+            className="font-semibold cursor-default"
+            onMouseEnter={(e) => {
+                e.currentTarget.style.color = dark ? '#FFFFFF' : '#000000'
+            }}
+            onMouseLeave={(e) => {
+                e.currentTarget.style.color = dark ? '#F5F5F7' : '#1D1D1F'
+            }}
         >
             {children}
         </span>
@@ -830,14 +836,13 @@ function Hero() {
                         initial={{ opacity: 0, y: 16 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.88 }}
-                        className="leading-relaxed mb-6 text-[15px] max-w-[500px]"
-                        style={{ color: dark ? '#8E8E93' : '#6E6E73' }}
+                        className="leading-[1.75] mb-6 text-[15.5px] max-w-[520px] tracking-[-0.01em]"
+                        style={{ color: dark ? '#A1A1AA' : '#6E6E73' }}
                     >
-                        Computer Science Engineering student building at the intersection of{' '}
-                        <Hi color="rgba(29,29,31,0.18)">Machine Learning</Hi>,{' '}
-                        <Hi color="rgba(29,29,31,0.18)">Large Language Models</Hi>, and{' '}
-                        <Hi color="rgba(29,29,31,0.18)">RAG Systems</Hi>. Passionate about{' '}
-                        <Hi color="rgba(134,134,139,0.18)">Generative AI</Hi> and AI Agents.
+                        Computer Science Engineering student building intelligent systems at the intersection of{' '}
+                        <Hi>Machine Learning</Hi>, <Hi>Large Language Models</Hi>, and{' '}
+                        <Hi>Retrieval-Augmented Generation (RAG)</Hi>. Passionate about{' '}
+                        <Hi>Generative AI</Hi>, <Hi>AI Agents</Hi>, and scalable AI applications.
                     </motion.p>
 
 
@@ -1182,7 +1187,7 @@ function Portfolio() {
                 <FadeUp className="mb-16">
                     <SectionLabel>Work</SectionLabel>
                     <h2 className="font-display text-[48px] font-bold tracking-[-0.02em]" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>
-                        Selected
+                        Featured
                         <br />
                         <em className="not-italic font-extralight" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>Projects.</em>
                     </h2>
