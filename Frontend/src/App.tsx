@@ -11,7 +11,6 @@ import {
     motion,
     useInView,
     AnimatePresence,
-    useScroll,
     useMotionValue,
     useSpring,
 } from 'framer-motion'
@@ -237,25 +236,6 @@ function Cursor() {
                     : 'radial-gradient(circle, rgba(29,29,31,0.35) 0%, rgba(29,29,31,0.12) 60%, transparent 100%)',
                 filter: 'blur(4px)',
                 opacity: visible ? 1 : 0,
-            }}
-        />
-    )
-}
-
-// Scroll Progress Bar 
-
-function ScrollProgress() {
-    const { scrollYProgress } = useScroll()
-    const scaleX = useSpring(scrollYProgress, { stiffness: 200, damping: 30 })
-    const { dark } = useContext(ThemeContext)
-    return (
-        <motion.div
-            className="fixed top-0 left-0 right-0 h-[2px] origin-left z-[60]"
-            style={{
-                scaleX,
-                background: dark
-                    ? 'linear-gradient(to right, #FFFFFF, #A0A0A0, #6E6E73)'
-                    : 'linear-gradient(to right, #1D1D1F, #6E6E73, #D2D2D7)',
             }}
         />
     )
@@ -970,7 +950,7 @@ const ABOUT_CARDS = [
             </svg>
         ),
         title: 'Experience',
-        text: 'Lead the development of Forá (a time capsule app)',
+        text: 'Lead the development of Forá (time capsule app)',
         accent: 'rgba(29,29,31,0.12)',
     },
     {
@@ -1532,7 +1512,6 @@ export default function App() {
                 } as CSSProperties}
             >
                 <Cursor />
-                <ScrollProgress />
                 <Navbar />
                 <Hero />
                 <About />
