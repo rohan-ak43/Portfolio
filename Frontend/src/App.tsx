@@ -567,15 +567,55 @@ function Navbar() {
     const [menuOpen, setMenuOpen] = useState(false)
     const [active, setActive] = useState('Home')
 
+    // Consolidated scroll handler: navbar bg + active section detection
     useEffect(() => {
-        const fn = () => setScrolled(window.scrollY > 24)
-        window.addEventListener('scroll', fn, { passive: true })
-        return () => window.removeEventListener('scroll', fn)
+        const sectionIds = NAV_LINKS.map((l) => l.toLowerCase())
+        let ticking = false
+        let currentActive = 'Home'
+        let wasScrolled = false
+
+        const update = () => {
+            // Navbar background
+            const isScrolled = window.scrollY > 24
+            if (isScrolled !== wasScrolled) {
+                wasScrolled = isScrolled
+                setScrolled(isScrolled)
+            }
+
+            // Active section: find the last section whose top has crossed the trigger line
+            const offset = 100 // navbar (60px) + buffer
+            let current = sectionIds[0]
+
+            for (const id of sectionIds) {
+                const el = document.getElementById(id)
+                if (!el) continue
+                if (el.getBoundingClientRect().top <= offset) {
+                    current = id
+                }
+            }
+
+            const match = NAV_LINKS.find((l) => l.toLowerCase() === current)
+            if (match && match !== currentActive) {
+                currentActive = match
+                setActive(match)
+            }
+            ticking = false
+        }
+
+        const onScroll = () => {
+            if (!ticking) {
+                requestAnimationFrame(update)
+                ticking = true
+            }
+        }
+
+        window.addEventListener('scroll', onScroll, { passive: true })
+        update() // set initial state
+        return () => window.removeEventListener('scroll', onScroll)
     }, [])
 
     const go = (id: string) => {
         document.getElementById(id.toLowerCase())?.scrollIntoView({ behavior: 'smooth' })
-        setActive(id)
         setMenuOpen(false)
     }
 
@@ -616,10 +656,21 @@ function Navbar() {
                         <button
                             key={link}
                             onClick={() => go(link)}
-                            className="text-[13px] font-medium transition-colors duration-200"
-                            style={{ color: active === link ? textColor : subTextColor }}
+                            className="relative text-[13px] pb-[2px] transition-all duration-250 ease-out"
+                            style={{
+                                color: active === link ? textColor : subTextColor,
+                                fontWeight: active === link ? 600 : 500,
+                            }}
                         >
                             {link}
+                            {active === link && (
+                                <motion.span
+                                    layoutId="nav-underline"
+                                    className="absolute left-0 right-0 -bottom-[2px] h-[1.5px] rounded-full"
+                                    style={{ backgroundColor: dark ? '#F5F5F7' : '#1D1D1F' }}
+                                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                                />
+                            )}
                         </button>
                     ))}
                 </div>
@@ -771,9 +822,10 @@ function Navbar() {
                             <button
                                 key={link}
                                 onClick={() => go(link)}
-                                className="block w-full text-left py-3 text-sm font-medium"
+                                className="block w-full text-left py-3 text-sm transition-all duration-200"
                                 style={{
-                                    color: textColor,
+                                    color: active === link ? textColor : subTextColor,
+                                    fontWeight: active === link ? 600 : 500,
                                     borderBottom: dark ? '1px solid rgba(255,255,255,0.06)' : '1px solid rgba(0,0,0,0.06)',
                                 }}
                             >
