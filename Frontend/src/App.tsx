@@ -1,3 +1,4 @@
+// Frontend/src/App.tsx
 import {
     useState,
     useEffect,
@@ -1302,12 +1303,41 @@ function Contact() {
     const { dark } = useContext(ThemeContext)
     const [form, setForm] = useState({ name: '', email: '', message: '' })
     const [sent, setSent] = useState(false)
+    const [sending, setSending] = useState(false)
+    const [error, setError] = useState('')
 
-    const handleSubmit = (e: FormEvent) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
-        setSent(true)
-        setForm({ name: '', email: '', message: '' })
-        setTimeout(() => setSent(false), 3200)
+        setSending(true)
+        setError('')
+
+        try {
+            const res = await fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    access_key: import.meta.env.VITE_WEB3FORMS_KEY,
+                    name: form.name,
+                    email: form.email,
+                    message: form.message,
+                    subject: `Portfolio Contact — ${form.name}`,
+                }),
+            })
+
+            const data = await res.json()
+
+            if (data.success) {
+                setSent(true)
+                setForm({ name: '', email: '', message: '' })
+                setTimeout(() => setSent(false), 3200)
+            } else {
+                setError(data.message || 'Something went wrong. Please try again.')
+            }
+        } catch {
+            setError('Network error — please check your connection and try again.')
+        } finally {
+            setSending(false)
+        }
     }
 
     const inputClass =
@@ -1318,6 +1348,8 @@ function Contact() {
         border: dark ? '1px solid rgba(255,255,255,0.1)' : '1px solid #D2D2D7',
         color: dark ? '#F5F5F7' : '#1D1D1F',
     }
+
+    const isDisabled = sending || sent
 
     return (
         <section id="contact" className="py-32" style={{ backgroundColor: dark ? '#111111' : '#FFFFFF' }}>
@@ -1344,7 +1376,7 @@ function Contact() {
                                         </svg>
                                     ),
                                     label: 'akrohan437@gmail.com',
-                                    href: 'mailto:akrohan437@gmial.com',
+                                    href: 'mailto:akrohan437@gmail.com',
                                 },
                                 {
                                     icon: (
@@ -1399,6 +1431,7 @@ function Contact() {
                                     onChange={(e) => setForm({ ...form, name: e.target.value })}
                                     placeholder="Your name"
                                     required
+                                    disabled={isDisabled}
                                     className={inputClass}
                                     style={{ ...inputStyle, '--tw-placeholder-color': 'rgba(255,255,255,0.25)' } as React.CSSProperties}
                                 />
@@ -1411,6 +1444,7 @@ function Contact() {
                                     onChange={(e) => setForm({ ...form, email: e.target.value })}
                                     placeholder="your@email.com"
                                     required
+                                    disabled={isDisabled}
                                     className={inputClass}
                                     style={inputStyle}
                                 />
@@ -1423,22 +1457,26 @@ function Contact() {
                                     placeholder="Tell me about your project..."
                                     rows={5}
                                     required
+                                    disabled={isDisabled}
                                     className={`${inputClass} resize-none`}
                                     style={inputStyle}
                                 />
                             </div>
                             <AnimatePresence mode="wait">
                                 <motion.button
-                                    key={sent ? 'sent' : 'send'}
+                                    key={sent ? 'sent' : sending ? 'sending' : 'send'}
                                     type="submit"
-                                    whileHover={{ scale: 1.015, boxShadow: '0 8px 24px rgba(29,29,31,0.25)' }}
-                                    whileTap={{ scale: 0.985 }}
+                                    disabled={isDisabled}
+                                    whileHover={isDisabled ? {} : { scale: 1.015, boxShadow: '0 8px 24px rgba(29,29,31,0.25)' }}
+                                    whileTap={isDisabled ? {} : { scale: 0.985 }}
                                     initial={{ opacity: 0.8 }}
                                     animate={{ opacity: 1 }}
-                                    className="w-full py-4 rounded-xl text-[13px] font-semibold transition-colors"
+                                    className="w-full py-4 rounded-xl text-[13px] font-semibold transition-colors disabled:cursor-not-allowed"
                                     style={sent
                                         ? { backgroundColor: '#10B981', color: '#FFFFFF' }
-                                        : { background: dark ? '#FFFFFF' : '#1D1D1F', color: dark ? '#0A0A0A' : '#FFFFFF' }
+                                        : sending
+                                            ? { background: dark ? 'rgba(255,255,255,0.7)' : 'rgba(29,29,31,0.7)', color: dark ? '#0A0A0A' : '#FFFFFF' }
+                                            : { background: dark ? '#FFFFFF' : '#1D1D1F', color: dark ? '#0A0A0A' : '#FFFFFF' }
                                     }
                                 >
                                     {sent ? (
@@ -1446,9 +1484,19 @@ function Contact() {
                                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4"><polyline points="20 6 9 17 4 12" /></svg>
                                             Message Sent
                                         </span>
-                                    ) : 'Send Message'}
+                                    ) : sending ? 'Sending...' : 'Send Message'}
                                 </motion.button>
                             </AnimatePresence>
+                            {error && (
+                                <motion.p
+                                    initial={{ opacity: 0, y: -4 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="text-[13px] text-center mt-2"
+                                    style={{ color: '#EF4444' }}
+                                >
+                                    {error}
+                                </motion.p>
+                            )}
                         </form>
                     </FadeUp>
                 </div>
@@ -1456,6 +1504,7 @@ function Contact() {
         </section>
     )
 }
+
 
 // Footer 
 
