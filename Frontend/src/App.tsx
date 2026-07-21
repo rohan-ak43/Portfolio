@@ -1559,7 +1559,6 @@ export default function App() {
                     transition: 'background-color 0.4s ease',
                 } as CSSProperties}
             >
-                <Cursor />
                 <Navbar />
                 <Hero />
                 <About />
