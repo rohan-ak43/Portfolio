@@ -6,8 +6,28 @@
     --font-display: 'Geist', 'Inter', system-ui, sans-serif;
 }
 
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
 html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+
+body {
+    overflow-x: hidden;
+    min-width: 0;
+}
+
+img,
+video,
+svg {
+    max-width: 100%;
+    height: auto;
+    display: block;
 }
 
 ::-webkit-scrollbar {

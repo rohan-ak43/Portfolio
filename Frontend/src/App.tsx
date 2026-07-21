@@ -204,8 +204,11 @@ function Cursor() {
     const springX = useSpring(x, { damping: 28, stiffness: 180, mass: 0.5 })
     const springY = useSpring(y, { damping: 28, stiffness: 180, mass: 0.5 })
     const [visible, setVisible] = useState(false)
+    const [isTouch, setIsTouch] = useState(false)
 
     useEffect(() => {
+        // Disable custom cursor on touch / hover:none devices
+        setIsTouch(window.matchMedia('(hover: none)').matches)
         const move = (e: MouseEvent) => {
             x.set(e.clientX - 20)
             y.set(e.clientY - 20)
@@ -221,6 +224,7 @@ function Cursor() {
     }, [x, y, visible])
 
     const { dark } = useContext(ThemeContext)
+    if (isTouch) return null
     return (
         <motion.div
             className="fixed top-0 left-0 w-10 h-10 rounded-full pointer-events-none z-[200]"
@@ -618,7 +622,7 @@ function Navbar() {
                 borderBottom: navBorder,
             }}
         >
-            <div className="max-w-6xl mx-auto px-6 h-[60px] flex items-center justify-between">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 h-[60px] flex items-center justify-between">
                 <button
                     onClick={() => go('Home')}
                     className="font-display font-bold text-[18px] tracking-tight"
@@ -824,11 +828,11 @@ function Hero() {
     return (
         <section id="home" className="relative min-h-screen flex items-center pt-[60px] overflow-hidden" style={{ backgroundColor: dark ? '#0A0A0A' : '#F5F5F7' }}>
             <Blobs />
-            <div className="relative z-10 max-w-6xl mx-auto px-6 py-28 w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24 lg:py-28 w-full grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
                 {/* Text */}
                 <div>
 
-                    <h1 className="font-display text-[58px] md:text-[74px] lg:text-[84px] font-bold leading-[1.02] tracking-[-0.025em] mb-5" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>
+                    <h1 className="font-display font-bold leading-[1.02] tracking-[-0.025em] mb-4 sm:mb-5" style={{ color: dark ? '#F5F5F7' : '#1D1D1F', fontSize: 'clamp(2.25rem, 8vw, 5.25rem)' }}>
                         {HERO_WORDS.map((word, i) => (
                             <span key={word} className="inline-block mr-[0.2em]">
                                 <RevealWord
@@ -864,7 +868,7 @@ function Hero() {
                         initial={{ opacity: 0, y: 16 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.88 }}
-                        className="leading-[1.75] mb-6 text-[15.5px] max-w-[520px] tracking-[-0.01em]"
+                        className="leading-[1.75] mb-6 text-[14px] sm:text-[15.5px] max-w-full lg:max-w-[520px] tracking-[-0.01em]"
                         style={{ color: dark ? '#A1A1AA' : '#6E6E73' }}
                     >
                         Computer Science Engineering student building intelligent systems at the intersection of{' '}
@@ -966,12 +970,12 @@ const ABOUT_CARDS = [
 function About() {
     const { dark } = useContext(ThemeContext)
     return (
-        <section id="about" className="py-32" style={{ backgroundColor: dark ? '#111111' : '#FFFFFF' }}>
-            <div className="max-w-6xl mx-auto px-6">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 mb-20">
+        <section id="about" className="py-16 sm:py-24 lg:py-32" style={{ backgroundColor: dark ? '#111111' : '#FFFFFF' }}>
+            <div className="max-w-6xl mx-auto px-4 sm:px-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 mb-12 lg:mb-20">
                     <FadeUp>
                         <SectionLabel>About Me</SectionLabel>
-                        <h2 className="font-display text-[48px] md:text-[56px] font-bold leading-tight tracking-[-0.02em]" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>
+                        <h2 className="font-display font-bold leading-tight tracking-[-0.02em]" style={{ color: dark ? '#F5F5F7' : '#1D1D1F', fontSize: 'clamp(1.875rem, 5vw, 3.5rem)' }}>
                             Turning ideas into
                             <br />
                             <em className="not-italic font-extralight" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>intelligent systems.</em>
@@ -1084,12 +1088,12 @@ function TimelineItem({ item, index }: { item: (typeof TIMELINE)[0]; index: numb
 function Resume() {
     const { dark } = useContext(ThemeContext)
     return (
-        <section id="resume" className="py-32" style={{ backgroundColor: dark ? '#0A0A0A' : '#F5F5F7' }}>
-            <div className="max-w-6xl mx-auto px-6">
+        <section id="resume" className="py-16 sm:py-24 lg:py-32" style={{ backgroundColor: dark ? '#0A0A0A' : '#F5F5F7' }}>
+            <div className="max-w-6xl mx-auto px-4 sm:px-6">
                 <FadeUp className="mb-16">
                     <SectionLabel>Journey</SectionLabel>
                     <div className="flex flex-wrap items-end justify-between gap-6">
-                        <h2 className="font-display text-[48px] font-bold tracking-[-0.02em]" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>
+                        <h2 className="font-display font-bold tracking-[-0.02em]" style={{ color: dark ? '#F5F5F7' : '#1D1D1F', fontSize: 'clamp(1.875rem, 5vw, 3rem)' }}>
                             Experience &amp;
                             <br />
                             <em className="not-italic font-extralight" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>Education.</em>
@@ -1100,7 +1104,7 @@ function Resume() {
                             rel="noreferrer"
                             whileHover={{ scale: 1.04, boxShadow: dark ? '0 8px 24px rgba(76,142,247,0.35)' : '0 8px 24px rgba(29,29,31,0.2)' }}
                             whileTap={{ scale: 0.96 }}
-                            className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-[13px] font-semibold transition-shadow"
+                            className="inline-flex shrink-0 items-center gap-2 px-5 sm:px-6 py-3 rounded-full text-[13px] font-semibold transition-shadow"
                             style={{
                                 background: dark ? '#FFFFFF' : '#1D1D1F',
                                 color: dark ? '#0A0A0A' : '#FFFFFF',
@@ -1116,7 +1120,7 @@ function Resume() {
                         </motion.a>
                     </div>
                 </FadeUp>
-                <div className="max-w-[580px]">
+                <div className="max-w-full lg:max-w-[580px]">
                     {TIMELINE.map((item, i) => (
                         <TimelineItem key={i} item={item} index={i} />
                     ))}
@@ -1140,7 +1144,7 @@ function ProjectCard({ project, index }: { project: (typeof PROJECTS)[0]; index:
             ref={ref}
             initial={{ opacity: 0, y: 28 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: (index % 3) * 0.1, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.6, delay: (index % 2) * 0.1, ease: [0.22, 1, 0.36, 1] }}
         >
             <motion.div
                 onHoverStart={() => setHovered(true)}
@@ -1178,8 +1182,8 @@ function ProjectCard({ project, index }: { project: (typeof PROJECTS)[0]; index:
 
                 {/* Content */}
                 <div className="p-6 flex flex-col flex-1">
-                    <h3 className="font-display font-bold text-[16px] mb-2" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>{project.title}</h3>
-                    <p className="text-[13px] leading-relaxed mb-4 flex-1" style={{ color: dark ? '#8E8E93' : '#6E6E73' }}>{project.description}</p>
+                    <h3 className="font-display font-bold text-[15px] sm:text-[16px] mb-2" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>{project.title}</h3>
+                    <p className="text-[13px] leading-relaxed mb-4 flex-1 line-clamp-4" style={{ color: dark ? '#8E8E93' : '#6E6E73' }}>{project.description}</p>
 
                     <div className="flex justify-center">
                         <motion.a
@@ -1187,7 +1191,7 @@ function ProjectCard({ project, index }: { project: (typeof PROJECTS)[0]; index:
                             target="_blank"
                             rel="noopener noreferrer"
                             whileTap={{ scale: 0.95 }}
-                            className="w-[75%] text-center text-[12px] font-medium py-2.5 rounded-xl transition-colors cursor-pointer"
+                            className="w-[85%] sm:w-[75%] text-center text-[12px] font-medium py-2.5 rounded-xl transition-colors cursor-pointer"
                             style={{ background: dark ? '#FFFFFF' : '#1D1D1F', color: dark ? '#0A0A0A' : '#FFFFFF' }}
                         >
                             GitHub
@@ -1202,11 +1206,11 @@ function ProjectCard({ project, index }: { project: (typeof PROJECTS)[0]; index:
 function Portfolio() {
     const { dark } = useContext(ThemeContext)
     return (
-        <section id="portfolio" className="py-32" style={{ backgroundColor: dark ? '#111111' : '#FFFFFF' }}>
-            <div className="max-w-6xl mx-auto px-6">
-                <FadeUp className="mb-16">
+        <section id="portfolio" className="py-16 sm:py-24 lg:py-32" style={{ backgroundColor: dark ? '#111111' : '#FFFFFF' }}>
+            <div className="max-w-6xl mx-auto px-4 sm:px-6">
+                <FadeUp className="mb-10 sm:mb-16">
                     <SectionLabel>Work</SectionLabel>
-                    <h2 className="font-display text-[48px] font-bold tracking-[-0.02em]" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>
+                    <h2 className="font-display font-bold tracking-[-0.02em]" style={{ color: dark ? '#F5F5F7' : '#1D1D1F', fontSize: 'clamp(1.875rem, 5vw, 3rem)' }}>
                         Featured
                         <br />
                         <em className="not-italic font-extralight" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>Projects.</em>
@@ -1227,11 +1231,11 @@ function Portfolio() {
 function Skills() {
     const { dark } = useContext(ThemeContext)
     return (
-        <section id="skills" className="py-32" style={{ backgroundColor: dark ? '#0A0A0A' : '#F5F5F7' }}>
-            <div className="max-w-6xl mx-auto px-6">
-                <FadeUp className="mb-16">
+        <section id="skills" className="py-16 sm:py-24 lg:py-32" style={{ backgroundColor: dark ? '#0A0A0A' : '#F5F5F7' }}>
+            <div className="max-w-6xl mx-auto px-4 sm:px-6">
+                <FadeUp className="mb-10 sm:mb-16">
                     <SectionLabel>Toolkit</SectionLabel>
-                    <h2 className="font-display text-[48px] font-bold tracking-[-0.02em]" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>
+                    <h2 className="font-display font-bold tracking-[-0.02em]" style={{ color: dark ? '#F5F5F7' : '#1D1D1F', fontSize: 'clamp(1.875rem, 5vw, 3rem)' }}>
                         Skills &amp;
                         <br />
                         <em className="not-italic font-extralight" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>Technologies.</em>
@@ -1264,7 +1268,7 @@ function Skills() {
                                             key={skill}
                                             whileHover={{ backgroundColor: dark ? 'rgba(76,142,247,0.15)' : SKILL_ACCENTS[category], scale: 1.05 }}
                                             transition={{ duration: 0.15 }}
-                                            className="text-[12px] px-3 py-1.5 rounded-lg cursor-default"
+                                            className="text-[12px] px-3 py-1.5 rounded-lg cursor-default min-w-0 break-words"
                                             style={{
                                                 color: dark ? '#A1A1A6' : '#515154',
                                                 backgroundColor: dark ? 'rgba(255,255,255,0.05)' : '#F5F5F7',
@@ -1339,17 +1343,17 @@ function Contact() {
     const isDisabled = sending || sent
 
     return (
-        <section id="contact" className="py-32" style={{ backgroundColor: dark ? '#111111' : '#FFFFFF' }}>
-            <div className="max-w-6xl mx-auto px-6">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
+        <section id="contact" className="py-16 sm:py-24 lg:py-32" style={{ backgroundColor: dark ? '#111111' : '#FFFFFF' }}>
+            <div className="max-w-6xl mx-auto px-4 sm:px-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
                     <FadeUp>
                         <SectionLabel>Say Hello</SectionLabel>
-                        <h2 className="font-display text-[48px] font-bold tracking-[-0.02em] mb-6" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>
+                        <h2 className="font-display font-bold tracking-[-0.02em] mb-5 sm:mb-6" style={{ color: dark ? '#F5F5F7' : '#1D1D1F', fontSize: 'clamp(1.875rem, 5vw, 3rem)' }}>
                             {"Let's connect"}
                             <br />
                             <em className="not-italic font-extralight" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>and collaborate.</em>
                         </h2>
-                        <p className="leading-relaxed mb-10 text-[15px]" style={{ color: dark ? '#8E8E93' : '#6E6E73' }}>
+                        <p className="leading-relaxed mb-8 sm:mb-10 text-[14px] sm:text-[15px]" style={{ color: dark ? '#8E8E93' : '#6E6E73' }}>
                             I'm always open to new technologies, ideas, collaborations, and opportunities. Whether you
                             have a project in mind or just want to talk about AI, let's connect.
                         </p>
@@ -1505,8 +1509,8 @@ function Footer() {
                 borderTop: dark ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(29,29,31,0.12)',
             }}
         >
-            <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <p className="text-[12px]" style={{ color: dark ? '#6E6E73' : '#86868B' }}>
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <p className="text-[12px] text-center sm:text-left" style={{ color: dark ? '#6E6E73' : '#86868B' }}>
                     Designed &amp; Developed by A Rohan &middot; &copy; 2026
                 </p>
                 <div className="flex items-center gap-6">
@@ -1547,7 +1551,7 @@ export default function App() {
     return (
         <ThemeContext.Provider value={{ dark, toggleDark }}>
             <div
-                className="min-h-screen font-sans"
+                className="min-h-screen font-sans overflow-x-hidden"
                 style={{
                     backgroundColor: dark ? '#0A0A0A' : '#F5F5F7',
                     WebkitFontSmoothing: 'antialiased',
