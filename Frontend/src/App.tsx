@@ -30,7 +30,7 @@ const PROJECTS = [
     {
         title: 'CrickIQ - AI Cricket Analytics',
         description:
-            'Real-time computer vision system analyzing match footage with YOLO-based player tracking, shot classification, and live performance dashboards.',
+            'CrickIQ is a computer vision and NLP platform that extracts 33-point pose landmarks from batting/bowling footage using MediaPipe, then computes biomechanical metrics like joint angles, swing arc, and release point. These structured features are fed into CrickLM, a custom-trained language model (not a general-purpose VLM) that generates weakness reports, tactical vulnerabilities, and corrective drills. Built with FastAPI + React/TypeScript, with comparison mode using cosine similarity and Euclidean distance against professional player benchmarks.',
         tags: ['Python', 'OpenCV', 'YOLO', 'FastAPI', 'React'],
         accent: '#0a1a1a',
         img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=400&fit=crop&auto=format',
@@ -38,9 +38,9 @@ const PROJECTS = [
         github: 'https://github.com/rohan-ak43/Cricket-Analytics-',
     },
     {
-        title: 'Movie Recommendation Engine',
+        title: 'Cinematch - Movie Recommendation Engine',
         description:
-            'Hybrid collaborative + content-based filtering with natural language query support powered by semantic embeddings and vector similarity search.',
+            'CineMatch is a hybrid movie recommendation system combining six ML modules - TF-IDF + cosine similarity for content-based filtering, KNN for collaborative filtering, and a weighted hybrid recommender for final ranking. It also layers in NLP features like mood detection and sentiment analysis (Logistic Regression) and rating prediction via Random Forest Regression. Built with a Flask REST API (JWT-authenticated, 10+ endpoints), MySQL for persistence, and a vanilla HTML/JS frontend for the dashboard and history views.',
         tags: ['Python', 'PyTorch', 'FastAPI', 'PostgreSQL'],
         accent: '#071515',
         img: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&h=400&fit=crop&auto=format',
@@ -48,9 +48,9 @@ const PROJECTS = [
         github: 'https://github.com/rohan-ak43/Cinematch',
     },
     {
-        title: 'Remo — Rehabilitation AI',
+        title: 'RemoRehab - Remote Rehabilitation Platform',
         description:
-            'AI physiotherapy assistant using MediaPipe pose estimation to guide patients through exercises with real-time biomechanical feedback.',
+            'Remo Rehab is a real-time remote physiotherapy system combining MediaPipe Pose for webcam-based rep counting and form-accuracy tracking with an ESP32 + FSR sensor streaming live muscle activation data. A NestJS backend with Socket.IO handles WebSocket streaming between a 1-doctor-to-1-patient session, while local computation handles rep counting and pose tracking to minimize load. The Google Gemini API is called sparingly, at key checkpoints and session end, to generate structured clinical reports covering form corrections, effort consistency, and rehab progress notes.',
         tags: ['Python', 'MediaPipe', 'TensorFlow', 'React'],
         accent: '#051010',
         img: 'https://images.unsplash.com/photo-1645005512942-a17817fb7c11?w=800&h=400&fit=crop&auto=format',
@@ -58,10 +58,10 @@ const PROJECTS = [
         github: 'https://github.com/rohan-ak43/Remo',
     },
     {
-        title: 'Time Capsule App',
+        title: 'Forá - Time Capsule App',
         description:
-            'Encrypted personal archive for sealing memories, letters, and media to be unlocked at a future date with blockchain-verified integrity.',
-        tags: ['Next.js', 'Supabase', 'TypeScript', 'Solidity'],
+            'Forá is a time capsule messaging app that lets users schedule messages to their future selves or others, with precise delivery timing and privacy controls. Built with React and TypeScript on the frontend, with Firebase handling backend storage and authentication. Includes a canvas-based signature feature, optimized for smooth capture and rendering performance. ',
+        tags: ['Next.js', 'Firebase', 'TypeScript', 'Solidity'],
         accent: '#081818',
         img: 'https://images.unsplash.com/photo-1634562876572-5abe57afcceb?w=800&h=400&fit=crop&auto=format',
         imgAlt: 'Pen resting on handwritten letter',
@@ -113,12 +113,12 @@ const TIMELINE = [
 ]
 
 const SKILLS_DATA: Record<string, string[]> = {
-    Programming: ['Python', 'TypeScript', 'JavaScript', 'Go', 'SQL'],
-    Backend: ['FastAPI', 'Node.js', 'GraphQL', 'REST API', 'gRPC'],
-    Frontend: ['React', 'Next.js', 'Tailwind CSS', 'Framer Motion'],
+    Programming: ['Python', 'HTML', 'CSS', 'JavaScript', 'TypeScript', 'MYSQL'],
+    Backend: ['FastAPI', 'Node.js', 'REST API'],
+    Frontend: ['React', 'Next.js', 'Tailwind CSS'],
     'AI / ML': ['TensorFlow', 'PyTorch', 'OpenCV', 'MediaPipe', 'LangChain', 'Hugging Face'],
-    Databases: ['PostgreSQL', 'MongoDB', 'Redis', 'Firebase', 'Supabase'],
-    'Cloud & DevOps': ['Docker', 'AWS', 'GCP', 'Git', 'CI/CD'],
+    Databases: ['MongoDB', 'Redis', 'Firebase', 'MYSQL'],
+    'Cloud & DevOps': ['Docker', 'AWS', 'Github', 'Git', 'CI/CD'],
 }
 
 const SKILL_ACCENTS: Record<string, string> = {
@@ -1239,11 +1239,11 @@ function Skills() {
                 </FadeUp>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {Object.entries(SKILLS_DATA).map(([category, skills], i) => (
-                        <FadeUp key={category} delay={i * 0.07}>
+                        <FadeUp key={category} delay={i * 0.07} className="h-full">
                             <motion.div
                                 whileHover={{ y: -4, boxShadow: dark ? '0 16px 40px rgba(0,0,0,0.4)' : '0 16px 40px rgba(0,0,0,0.06)' }}
                                 transition={{ duration: 0.18 }}
-                                className="rounded-2xl p-6"
+                                className="rounded-2xl p-6 h-full"
                                 style={{
                                     backgroundColor: dark ? '#1A1A1A' : '#FFFFFF',
                                     border: dark ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E5EA',
@@ -1520,14 +1520,14 @@ function Footer() {
                             href={href}
                             className="group relative text-[11px] font-mono tracking-wide py-1 cursor-pointer"
                             style={{ color: dark ? '#6E6E73' : '#86868B' }}
-                            whileHover={{ 
+                            whileHover={{
                                 color: dark ? '#FFFFFF' : '#1D1D1F',
-                                y: -2 
+                                y: -2
                             }}
                             transition={{ duration: 0.25, ease: 'easeOut' }}
                         >
                             {label}
-                            <span 
+                            <span
                                 className="absolute bottom-0 left-0 h-[1px] w-0 bg-current transition-all duration-300 ease-out group-hover:w-full"
                             />
                         </motion.a>
