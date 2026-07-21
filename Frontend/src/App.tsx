@@ -35,6 +35,7 @@ const PROJECTS = [
         accent: '#0a1a1a',
         img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=400&fit=crop&auto=format',
         imgAlt: 'Performance analytics dashboard on laptop screen',
+        github: 'https://github.com/rohan-ak43/Cricket-Analytics-',
     },
     {
         title: 'Movie Recommendation Engine',
@@ -44,6 +45,7 @@ const PROJECTS = [
         accent: '#071515',
         img: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&h=400&fit=crop&auto=format',
         imgAlt: 'Cinema theater interior',
+        github: 'https://github.com/rohan-ak43/Cinematch',
     },
     {
         title: 'Remo — Rehabilitation AI',
@@ -53,6 +55,7 @@ const PROJECTS = [
         accent: '#051010',
         img: 'https://images.unsplash.com/photo-1645005512942-a17817fb7c11?w=800&h=400&fit=crop&auto=format',
         imgAlt: 'Physical therapy rehabilitation session',
+        github: 'https://github.com/rohan-ak43/Remo',
     },
     {
         title: 'Time Capsule App',
@@ -62,15 +65,7 @@ const PROJECTS = [
         accent: '#081818',
         img: 'https://images.unsplash.com/photo-1634562876572-5abe57afcceb?w=800&h=400&fit=crop&auto=format',
         imgAlt: 'Pen resting on handwritten letter',
-    },
-    {
-        title: 'TruthSeeker — Fake News AI',
-        description:
-            'Multi-modal misinformation detection combining NLP claim verification, source credibility scoring, and image forensics.',
-        tags: ['Python', 'BERT', 'FastAPI', 'React', 'Claude API'],
-        accent: '#0a1a1a',
-        img: 'https://images.unsplash.com/photo-1624269305548-1527ef905ff6?w=800&h=400&fit=crop&auto=format',
-        imgAlt: 'Newspaper headline text',
+        github: 'https://github.com/rohan-ak43/Fora',
     },
 ]
 
@@ -1186,25 +1181,17 @@ function ProjectCard({ project, index }: { project: (typeof PROJECTS)[0]; index:
                     <h3 className="font-display font-bold text-[16px] mb-2" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>{project.title}</h3>
                     <p className="text-[13px] leading-relaxed mb-4 flex-1" style={{ color: dark ? '#8E8E93' : '#6E6E73' }}>{project.description}</p>
 
-                    <div className="flex gap-2">
-                        <motion.button
+                    <div className="flex justify-center">
+                        <motion.a
+                            href={project.github}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             whileTap={{ scale: 0.95 }}
-                            className="flex-1 text-center text-[12px] font-medium py-2.5 rounded-xl transition-colors"
+                            className="w-[75%] text-center text-[12px] font-medium py-2.5 rounded-xl transition-colors cursor-pointer"
                             style={{ background: dark ? '#FFFFFF' : '#1D1D1F', color: dark ? '#0A0A0A' : '#FFFFFF' }}
                         >
                             GitHub
-                        </motion.button>
-                        <motion.button
-                            whileTap={{ scale: 0.95 }}
-                            className="flex-1 text-center text-[12px] font-medium py-2.5 rounded-xl transition-colors"
-                            style={{
-                                border: dark ? '1px solid rgba(255,255,255,0.12)' : '1px solid #D2D2D7',
-                                color: dark ? '#D1D5DB' : '#1D1D1F',
-                                backgroundColor: 'transparent',
-                            }}
-                        >
-                            Live Demo
-                        </motion.button>
+                        </motion.a>
                     </div>
                 </div>
             </motion.div>
@@ -1225,7 +1212,7 @@ function Portfolio() {
                         <em className="not-italic font-extralight" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>Projects.</em>
                     </h2>
                 </FadeUp>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     {PROJECTS.map((p, i) => (
                         <ProjectCard key={p.title} project={p} index={i} />
                     ))}
@@ -1358,13 +1345,13 @@ function Contact() {
                     <FadeUp>
                         <SectionLabel>Say Hello</SectionLabel>
                         <h2 className="font-display text-[48px] font-bold tracking-[-0.02em] mb-6" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>
-                            {"Let's build"}
+                            {"Let's connect"}
                             <br />
-                            <em className="not-italic font-extralight" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>something great.</em>
+                            <em className="not-italic font-extralight" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>and collaborate.</em>
                         </h2>
                         <p className="leading-relaxed mb-10 text-[15px]" style={{ color: dark ? '#8E8E93' : '#6E6E73' }}>
-                            I'm always open to new challenges, collaborations, and opportunities. Whether you
-                            have a project in mind or just want to talk about AI, drop me a message.
+                            I'm always open to new technologies, ideas, collaborations, and opportunities. Whether you
+                            have a project in mind or just want to talk about AI, let's connect.
                         </p>
                         <div className="space-y-4">
                             {[
@@ -1454,7 +1441,7 @@ function Contact() {
                                 <textarea
                                     value={form.message}
                                     onChange={(e) => setForm({ ...form, message: e.target.value })}
-                                    placeholder="Tell me about your project..."
+                                    placeholder="Wanna talk or build something together. Let's connect and talk..."
                                     rows={5}
                                     required
                                     disabled={isDisabled}
@@ -1526,16 +1513,24 @@ function Footer() {
                     {[
                         { href: 'https://github.com/rohan-ak43', label: 'GitHub' },
                         { href: 'https://www.linkedin.com/in/arohancist/', label: 'LinkedIn' },
-                        { href: 'mailto:akrohan437@gmial.com', label: 'Email' },
+                        { href: 'mailto:akrohan437@gmail.com', label: 'Email' },
                     ].map(({ href, label }) => (
-                        <a
+                        <motion.a
                             key={label}
                             href={href}
-                            className="text-[11px] font-mono tracking-wide transition-colors"
+                            className="group relative text-[11px] font-mono tracking-wide py-1 cursor-pointer"
                             style={{ color: dark ? '#6E6E73' : '#86868B' }}
+                            whileHover={{ 
+                                color: dark ? '#FFFFFF' : '#1D1D1F',
+                                y: -2 
+                            }}
+                            transition={{ duration: 0.25, ease: 'easeOut' }}
                         >
                             {label}
-                        </a>
+                            <span 
+                                className="absolute bottom-0 left-0 h-[1px] w-0 bg-current transition-all duration-300 ease-out group-hover:w-full"
+                            />
+                        </motion.a>
                     ))}
                 </div>
             </div>
