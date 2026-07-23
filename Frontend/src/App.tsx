@@ -284,11 +284,11 @@ const KB_ROWS: KeyDef[][] = [
     ],
 ]
 
-const KW = 26   // base key width px
-const KH = 28   // key height px
-const KG = 4    // gap px
+const KW = 2.6   // base key width em
+const KH = 2.8   // key height em
+const KG = 0.4   // gap em
 
-function kw(u: number) { return u * KW + (u - 1) * KG }
+function kw(u: number) { return `${u * KW + (u - 1) * KG}em` }
 
 function KeyboardIllustration() {
     const { dark } = useContext(ThemeContext)
@@ -324,32 +324,32 @@ function KeyboardIllustration() {
         if (lit) return {
             bg: '#F97316',
             text: '#fff',
-            shadow: `0 0 10px rgba(249,115,22,0.7), 0 3px 0 #92400E`,
-            yOff: 2,
+            shadow: `0 0 1em rgba(249,115,22,0.7), 0 0.3em 0 #92400E`,
+            yOff: '0.2em',
         }
         if (key.accent === 'orange') return {
             bg: dark ? '#C2410C' : '#EA580C',
             text: '#fff',
-            shadow: `0 3px 0 ${dark ? '#7C2D12' : '#9A3412'}`,
-            yOff: 0,
+            shadow: `0 0.3em 0 ${dark ? '#7C2D12' : '#9A3412'}`,
+            yOff: '0em',
         }
         if (key.accent === 'dark') return {
             bg: dark ? '#222' : '#3C3C3C',
             text: dark ? '#888' : '#999',
-            shadow: `0 3px 0 ${dark ? '#111' : '#1A1A1A'}`,
-            yOff: 0,
+            shadow: `0 0.3em 0 ${dark ? '#111' : '#1A1A1A'}`,
+            yOff: '0em',
         }
         if (key.accent === 'space') return {
             bg: dark ? '#2A2A2A' : '#3C3C3C',
             text: '',
-            shadow: `0 3px 0 ${dark ? '#111' : '#1A1A1A'}`,
-            yOff: 0,
+            shadow: `0 0.3em 0 ${dark ? '#111' : '#1A1A1A'}`,
+            yOff: '0em',
         }
         return {
             bg: dark ? '#404040' : '#D6D6D6',
             text: dark ? '#CCC' : '#2D2D2D',
-            shadow: `0 3px 0 ${dark ? '#1A1A1A' : '#A0A0A0'}`,
-            yOff: 0,
+            shadow: `0 0.3em 0 ${dark ? '#1A1A1A' : '#A0A0A0'}`,
+            yOff: '0em',
         }
     }
 
@@ -360,12 +360,13 @@ function KeyboardIllustration() {
     return (
         <div
             style={{
-                perspective: '700px',
+                perspective: '70em',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 width: '100%',
                 height: '100%',
+                fontSize: 'clamp(4px, 1.8vw, 10px)',
             }}
         >
             {/* Ambient glow under keyboard */}
@@ -376,38 +377,38 @@ function KeyboardIllustration() {
                 bottom: '10%',
                 left: '10%',
                 background: 'radial-gradient(ellipse, rgba(249,115,22,0.12) 0%, transparent 70%)',
-                filter: 'blur(20px)',
+                filter: 'blur(2em)',
                 pointerEvents: 'none',
             }} />
 
             <motion.div
-                animate={{ y: [0, -10, 0] }}
+                animate={{ y: ['0em', '-1em', '0em'] }}
                 transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
                 style={{ transformStyle: 'preserve-3d' }}
             >
                 <motion.div
-                    initial={{ opacity: 0, rotateX: 45, y: 40 }}
-                    animate={{ opacity: 1, rotateX: 18, rotateY: -6, y: 0 }}
+                    initial={{ opacity: 0, rotateX: 45, y: '4em' }}
+                    animate={{ opacity: 1, rotateX: 18, rotateY: -6, y: '0em' }}
                     transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
                     style={{
                         transformStyle: 'preserve-3d',
                         background: bodyBg,
-                        borderRadius: '14px',
-                        padding: '14px 16px 18px',
+                        borderRadius: '1.4em',
+                        padding: '1.4em 1.6em 1.8em',
                         boxShadow: dark
-                            ? '0 50px 100px rgba(0,0,0,0.9), 0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.08)'
-                            : '0 50px 100px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.12)',
+                            ? '0 5em 10em rgba(0,0,0,0.9), 0 0 0 0.1em rgba(255,255,255,0.06), inset 0 0.1em 0 rgba(255,255,255,0.08)'
+                            : '0 5em 10em rgba(0,0,0,0.6), 0 0 0 0.1em rgba(255,255,255,0.08), inset 0 0.1em 0 rgba(255,255,255,0.12)',
                     }}
                 >
                     {/* Top edge strip */}
                     <div style={{
-                        height: '6px',
-                        marginBottom: '10px',
+                        height: '0.6em',
+                        marginBottom: '1em',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'flex-end',
-                        gap: '4px',
-                        paddingRight: '4px',
+                        gap: '0.4em',
+                        paddingRight: '0.4em',
                     }}>
                         {[...Array(3)].map((_, i) => (
                             <motion.div
@@ -415,7 +416,7 @@ function KeyboardIllustration() {
                                 animate={{ opacity: [0.4, 1, 0.4] }}
                                 transition={{ duration: 1.5, delay: i * 0.5, repeat: Infinity, ease: 'easeInOut' }}
                                 style={{
-                                    width: 5, height: 5, borderRadius: '50%',
+                                    width: '0.5em', height: '0.5em', borderRadius: '50%',
                                     backgroundColor: i === 0 ? '#F97316' : i === 1 ? '#22C55E' : '#3B82F6',
                                 }}
                             />
@@ -426,7 +427,7 @@ function KeyboardIllustration() {
                     {KB_ROWS.map((row, ri) => (
                         <div
                             key={ri}
-                            style={{ display: 'flex', gap: `${KG}px`, marginBottom: ri < KB_ROWS.length - 1 ? KG : 0 }}
+                            style={{ display: 'flex', gap: `${KG}em`, marginBottom: ri < KB_ROWS.length - 1 ? `${KG}em` : 0 }}
                         >
                             {row.map((key, ki) => {
                                 const id = `${ri}-${ki}`
@@ -439,18 +440,15 @@ function KeyboardIllustration() {
                                         transition={{ duration: 0.08, ease: 'easeOut' }}
                                         style={{
                                             width,
-                                            height: KH,
+                                            height: `${KH}em`,
                                             flexShrink: 0,
                                             backgroundColor: c.bg,
-                                            borderRadius: '4px',
+                                            borderRadius: '0.4em',
                                             boxShadow: c.shadow,
                                             display: 'flex',
                                             alignItems: 'flex-end',
                                             justifyContent: 'center',
-                                            paddingBottom: '3px',
-                                            fontSize: key.u >= 1.5 ? '7px' : '8px',
-                                            fontFamily: 'monospace',
-                                            fontWeight: 700,
+                                            paddingBottom: '0.3em',
                                             color: c.text,
                                             userSelect: 'none',
                                             cursor: 'default',
@@ -465,10 +463,17 @@ function KeyboardIllustration() {
                                             top: 0, left: 0, right: 0,
                                             height: '45%',
                                             background: 'linear-gradient(to bottom, rgba(255,255,255,0.14), transparent)',
-                                            borderRadius: '4px 4px 0 0',
+                                            borderRadius: '0.4em 0.4em 0 0',
                                             pointerEvents: 'none',
                                         }} />
-                                        <span style={{ position: 'relative', zIndex: 1, letterSpacing: '0.03em' }}>
+                                        <span style={{ 
+                                            position: 'relative', 
+                                            zIndex: 1, 
+                                            letterSpacing: '0.03em',
+                                            fontSize: key.u >= 1.5 ? '0.7em' : '0.8em',
+                                            fontFamily: 'monospace',
+                                            fontWeight: 700,
+                                        }}>
                                             {key.k}
                                         </span>
                                     </motion.div>
@@ -904,7 +909,7 @@ function Hero() {
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 1.2, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                    className="hidden lg:flex items-center justify-center h-[500px]"
+                    className="flex items-center justify-center w-full min-h-[280px] sm:min-h-[350px] lg:min-h-0 lg:h-[500px]"
                 >
                     <KeyboardIllustration />
                 </motion.div>
