@@ -1060,15 +1060,6 @@ function TimelineItem({ item, index }: { item: (typeof TIMELINE)[0]; index: numb
                     animate={inView ? { scale: 1 } : {}}
                     transition={{ duration: 0.4, delay: index * 0.07 + 0.2, type: 'spring', stiffness: 300 }}
                 />
-                {index < TIMELINE.length - 1 && (
-                    <motion.div
-                        className="w-px flex-1 mt-2"
-                        style={{ backgroundColor: dark ? 'rgba(255,255,255,0.1)' : '#D2D2D7' }}
-                        initial={{ scaleY: 0, originY: 0 }}
-                        animate={inView ? { scaleY: 1 } : {}}
-                        transition={{ duration: 0.5, delay: index * 0.07 + 0.3 }}
-                    />
-                )}
             </div>
             <div className="pb-10">
                 <div className="flex flex-wrap items-center gap-2.5 mb-1.5">
