@@ -1552,10 +1552,7 @@ function Footer() {
                 borderTop: dark ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(29,29,31,0.12)',
             }}
         >
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <p className="text-[12px] text-center sm:text-left" style={{ color: dark ? '#6E6E73' : '#86868B' }}>
-                    Designed &amp; Developed by A Rohan &middot; &copy; 2026
-                </p>
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-center gap-4">
                 <div className="flex items-center gap-6">
                     {[
                         { href: 'https://github.com/rohan-ak43', label: 'GitHub' },
