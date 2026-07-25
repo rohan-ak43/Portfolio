@@ -73,7 +73,7 @@ const TIMELINE = [
     {
         type: 'experience',
         title: 'Co – Founder | Mobile App Developer',
-        org: './localhost',
+        org: './localhost Studios',
         period: '2025 — Present',
         description:
             "Co-founded './localhost', a student-led venture creating expressive digital tools. Leading development of Forá time capsule app with focus on seamless integration and scalability.Leading the development of Forá – a time capsule messaging app that allows users to send messages to the future.",
