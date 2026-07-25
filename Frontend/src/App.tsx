@@ -71,14 +71,6 @@ const PROJECTS = [
 
 const TIMELINE = [
     {
-        type: 'education',
-        title: 'B.S. Abdur Rahman Crescent Institute of Technology',
-        org: 'B.Tech CSE(IoT)',
-        period: '2023 — 2027',
-        description:
-            "A 4th year undergraduate student with a strong foundation in computer science and a passion for artificial intelligence, machine learning and neural networks. \n Related Coursework: Data Structures & Algorithms, Python Programming, Probability & Statistics, Database Management System, Data Science and Machine Learning."
-    },
-    {
         type: 'experience',
         title: 'Mobile App Developer Intern',
         org: 'Neohorizon Analytics',
@@ -93,6 +85,14 @@ const TIMELINE = [
         period: '2025 — Present',
         description:
             "Co-founded './localhost', a student-led venture creating expressive digital tools. Leading development of Forá time capsule app with focus on seamless integration and scalability.Leading the development of Forá – a time capsule messaging app that allows users to send messages to the future.",
+    },
+    {
+        type: 'education',
+        title: 'B.S. Abdur Rahman Crescent Institute of Technology',
+        org: 'B.Tech CSE(IoT)',
+        period: '2023 — 2027',
+        description:
+            "A 4th year undergraduate student with a strong foundation in computer science and a passion for artificial intelligence, machine learning and neural networks. \n Related Coursework: Data Structures & Algorithms, Python Programming, Probability & Statistics, Database Management System, Data Science and Machine Learning."
     },
     {
         type: 'achievement',
@@ -973,17 +973,6 @@ const ABOUT_CARDS = [
     {
         svg: (
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-                <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
-                <path d="M6 12v5c3.33 1.67 8.67 1.67 12 0v-5" />
-            </svg>
-        ),
-        title: 'Education',
-        text: "B.S. Abdur Rahman Crescent Institute of Science and Technology, B.Tech.CSE(IoT).",
-        accent: 'rgba(29,29,31,0.12)',
-    },
-    {
-        svg: (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
                 <rect x="2" y="3" width="20" height="14" rx="2" />
                 <path d="M8 21h8M12 17v4" />
             </svg>
@@ -1003,6 +992,17 @@ const ABOUT_CARDS = [
         ),
         title: 'Experience',
         text: 'Lead the development of Forá (time capsule app)',
+        accent: 'rgba(29,29,31,0.12)',
+    },
+    {
+        svg: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                <path d="M6 12v5c3.33 1.67 8.67 1.67 12 0v-5" />
+            </svg>
+        ),
+        title: 'Education',
+        text: "B.S. Abdur Rahman Crescent Institute of Science and Technology, B.Tech.CSE(IoT).",
         accent: 'rgba(29,29,31,0.12)',
     },
     {
