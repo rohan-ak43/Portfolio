@@ -1,4 +1,4 @@
-// Frontend/src/App.tsx
+﻿// Frontend/src/App.tsx
 import {
     useState,
     useEffect,
@@ -30,7 +30,7 @@ const PROJECTS = [
     {
         title: 'CrickIQ - AI Cricket Analytics',
         description:
-            'CrickIQ is a computer vision and NLP platform that extracts 33-point pose landmarks from batting/bowling footage using MediaPipe, then computes biomechanical metrics like joint angles, swing arc, and release point. These structured features are fed into CrickLM, a custom-trained language model (not a general-purpose VLM) that generates weakness reports, tactical vulnerabilities, and corrective drills. Built with FastAPI + React/TypeScript, with comparison mode using cosine similarity and Euclidean distance against professional player benchmarks.',
+            'CrickIQ is an AI cricket analytics platform using MediaPipe and a custom LLM to analyze player movements, compare with professionals, and generate personalized performance insights.',
         tags: ['Python', 'OpenCV', 'YOLO', 'FastAPI', 'React'],
         accent: '#0a1a1a',
         img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=400&fit=crop&auto=format',
@@ -40,7 +40,7 @@ const PROJECTS = [
     {
         title: 'Cinematch - Movie Recommendation Engine',
         description:
-            'CineMatch is a hybrid movie recommendation system combining six ML modules - TF-IDF + cosine similarity for content-based filtering, KNN for collaborative filtering, and a weighted hybrid recommender for final ranking. It also layers in NLP features like mood detection and sentiment analysis (Logistic Regression) and rating prediction via Random Forest Regression. Built with a Flask REST API (JWT-authenticated, 10+ endpoints), MySQL for persistence, and a vanilla HTML/JS frontend for the dashboard and history views.',
+            'CineMatch is a hybrid movie recommendation system combining content-based filtering, collaborative filtering, sentiment analysis, and rating prediction for personalized recommendations.',
         tags: ['Python', 'PyTorch', 'FastAPI', 'PostgreSQL'],
         accent: '#071515',
         img: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&h=400&fit=crop&auto=format',
@@ -50,7 +50,7 @@ const PROJECTS = [
     {
         title: 'RemoRehab - Remote Rehabilitation Platform',
         description:
-            'Remo Rehab is a real-time remote physiotherapy system combining MediaPipe Pose for webcam-based rep counting and form-accuracy tracking with an ESP32 + FSR sensor streaming live muscle activation data. A NestJS backend with Socket.IO handles WebSocket streaming between a 1-doctor-to-1-patient session, while local computation handles rep counting and pose tracking to minimize load. The Google Gemini API is called sparingly, at key checkpoints and session end, to generate structured clinical reports covering form corrections, effort consistency, and rehab progress notes.',
+            'Remo Rehab is an AI-assisted physiotherapy platform using MediaPipe and ESP32 sensors for posture tracking, live monitoring, rep counting, and rehabilitation reports.',
         tags: ['Python', 'MediaPipe', 'TensorFlow', 'React'],
         accent: '#051010',
         img: 'https://images.unsplash.com/photo-1645005512942-a17817fb7c11?w=800&h=400&fit=crop&auto=format',
@@ -60,7 +60,7 @@ const PROJECTS = [
     {
         title: 'Forá - Time Capsule App',
         description:
-            'Forá is a time capsule messaging app that lets users schedule messages to their future selves or others, with precise delivery timing and privacy controls. Built with React and TypeScript on the frontend, with Firebase handling backend storage and authentication. Includes a canvas-based signature feature, optimized for smooth capture and rendering performance. ',
+            'Forá is a Secure time capsule messaging app for scheduling future messages with Firebase authentication, cloud storage, and digital signature support. ',
         tags: ['Next.js', 'Firebase', 'TypeScript', 'Solidity'],
         accent: '#081818',
         img: 'https://images.unsplash.com/photo-1634562876572-5abe57afcceb?w=800&h=400&fit=crop&auto=format',
@@ -466,9 +466,9 @@ function KeyboardIllustration() {
                                             borderRadius: '0.4em 0.4em 0 0',
                                             pointerEvents: 'none',
                                         }} />
-                                        <span style={{ 
-                                            position: 'relative', 
-                                            zIndex: 1, 
+                                        <span style={{
+                                            position: 'relative',
+                                            zIndex: 1,
                                             letterSpacing: '0.03em',
                                             fontSize: key.u >= 1.5 ? '0.7em' : '0.8em',
                                             fontFamily: 'monospace',
