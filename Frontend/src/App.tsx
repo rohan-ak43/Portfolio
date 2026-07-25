@@ -72,7 +72,7 @@ const PROJECTS = [
 const TIMELINE = [
     {
         type: 'experience',
-        title: 'Co – Founder | Mobile App Developer',
+        title: 'Co – Founder | Lead Developer',
         org: './localhost Studios',
         period: '2025 — Present',
         description:
