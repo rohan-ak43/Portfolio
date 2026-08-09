@@ -43,7 +43,7 @@ const PROJECTS = [
             'CineMatch is a hybrid movie recommendation system combining content-based filtering, collaborative filtering, sentiment analysis, and rating prediction for personalized recommendations.',
         tags: ['Python', 'PyTorch', 'FastAPI', 'PostgreSQL'],
         accent: '#071515',
-        img: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&h=400&fit=crop&auto=format',
+        img: 'Cinematch.png',
         imgAlt: 'Cinema theater interior',
         github: 'https://github.com/rohan-ak43/Cinematch',
     },
