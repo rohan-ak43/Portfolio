@@ -1,4 +1,4 @@
-﻿// Frontend/src/App.tsx
+// Frontend/src/App.tsx
 import {
     useState,
     useEffect,
@@ -33,8 +33,8 @@ const PROJECTS = [
             'CrickIQ is an AI cricket analytics platform using MediaPipe and a custom LLM to analyze player movements, compare with professionals, and generate personalized performance insights.',
         tags: ['Python', 'OpenCV', 'YOLO', 'FastAPI', 'React'],
         accent: '#0a1a1a',
-        img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=400&fit=crop&auto=format',
-        imgAlt: 'Performance analytics dashboard on laptop screen',
+        img: 'CrickIQ.png',
+        imgAlt: 'CrickIQ AI Cricket Analytics platform homepage',
         github: 'https://github.com/rohan-ak43/Cricket-Analytics-',
     },
     {
@@ -63,7 +63,7 @@ const PROJECTS = [
             'Forá is a Secure time capsule messaging app for scheduling future messages with Firebase authentication, cloud storage, and digital signature support. ',
         tags: ['Next.js', 'Firebase', 'TypeScript', 'Solidity'],
         accent: '#081818',
-        img: 'https://images.unsplash.com/photo-1634562876572-5abe57afcceb?w=800&h=400&fit=crop&auto=format',
+        img: 'Fora.jpeg',
         imgAlt: 'Pen resting on handwritten letter',
         github: 'https://github.com/rohan-ak43/Fora',
     },
