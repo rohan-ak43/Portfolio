@@ -1,6 +1,4 @@
 {
-  "rootDirectory": "Frontend",
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist",
-  "installCommand": "npm install"
+  "buildCommand": "cd ./Frontend && npm install && npm run build",
+  "outputDirectory": "Frontend/dist"
 }
