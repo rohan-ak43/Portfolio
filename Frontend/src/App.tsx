@@ -234,8 +234,8 @@ function Cursor() {
                 background: dark
                     ? 'radial-gradient(circle, rgba(200,200,210,0.3) 0%, rgba(200,200,210,0.08) 60%, transparent 100%)'
                     : 'radial-gradient(circle, rgba(29,29,31,0.35) 0%, rgba(29,29,31,0.12) 60%, transparent 100%)',
-                filter: 'blur(4px)',
                 opacity: visible ? 1 : 0,
+                willChange: 'transform',
             }}
         />
     )
@@ -376,15 +376,14 @@ function KeyboardIllustration() {
                 height: '30%',
                 bottom: '10%',
                 left: '10%',
-                background: 'radial-gradient(ellipse, rgba(249,115,22,0.12) 0%, transparent 70%)',
-                filter: 'blur(2em)',
+                background: 'radial-gradient(ellipse, rgba(249,115,22,0.18) 0%, transparent 70%)',
                 pointerEvents: 'none',
             }} />
 
             <motion.div
                 animate={{ y: ['0em', '-1em', '0em'] }}
                 transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-                style={{ transformStyle: 'preserve-3d' }}
+                style={{ transformStyle: 'preserve-3d', willChange: 'transform' }}
             >
                 <motion.div
                     initial={{ opacity: 0, rotateX: 45, y: '4em' }}
@@ -511,6 +510,7 @@ function Blobs() {
                         left,
                         background: colors[i],
                         filter: 'blur(80px)',
+                        willChange: 'transform',
                     }}
                     animate={{
                         x: [0, 30, -20, 0],
@@ -552,7 +552,6 @@ function Navbar() {
     const [menuOpen, setMenuOpen] = useState(false)
     const [active, setActive] = useState('Home')
 
-    // Consolidated scroll handler: navbar bg + active section detection
     useEffect(() => {
         const sectionIds = NAV_LINKS.map((l) => l.toLowerCase())
         let ticking = false
@@ -560,22 +559,24 @@ function Navbar() {
         let wasScrolled = false
 
         const update = () => {
-            // Navbar background
             const isScrolled = window.scrollY > 24
             if (isScrolled !== wasScrolled) {
                 wasScrolled = isScrolled
                 setScrolled(isScrolled)
             }
 
-            // Active section: find the last section whose top has crossed the trigger line
-            const offset = 100 // navbar (60px) + buffer
+            const offset = 100
             let current = sectionIds[0]
 
-            for (const id of sectionIds) {
-                const el = document.getElementById(id)
-                if (!el) continue
-                if (el.getBoundingClientRect().top <= offset) {
-                    current = id
+            if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 20) {
+                current = sectionIds[sectionIds.length - 1]
+            } else {
+                for (const id of sectionIds) {
+                    const el = document.getElementById(id)
+                    if (!el) continue
+                    if (el.getBoundingClientRect().top <= offset) {
+                        current = id
+                    }
                 }
             }
 
@@ -595,7 +596,7 @@ function Navbar() {
         }
 
         window.addEventListener('scroll', onScroll, { passive: true })
-        update() // set initial state
+        update() 
         return () => window.removeEventListener('scroll', onScroll)
     }, [])
 
