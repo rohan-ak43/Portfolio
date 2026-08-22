@@ -38,14 +38,14 @@ const PROJECTS = [
         github: 'https://github.com/rohan-ak43/Cricket-Analytics-',
     },
     {
-        title: 'Cinematch - Movie Recommendation Engine',
+        title: 'CReqx - Movie Recommendation Engine',
         description:
-            'CineMatch is a hybrid movie recommendation system combining content-based filtering, collaborative filtering, sentiment analysis, and rating prediction for personalized recommendations.',
+            'CReqx is a hybrid movie recommendation system combining content-based filtering, collaborative filtering, sentiment analysis, and rating prediction for personalized recommendations.',
         tags: ['Python', 'PyTorch', 'FastAPI', 'PostgreSQL'],
         accent: '#071515',
-        img: 'Cinematch.png',
+        img: 'CReqx.png',
         imgAlt: 'Cinema theater interior',
-        github: 'https://github.com/rohan-ak43/Cinematch',
+        github: 'https://github.com/rohan-ak43/CReqx',
     },
     {
         title: 'RemoRehab - Remote Rehabilitation Platform',
@@ -596,7 +596,7 @@ function Navbar() {
         }
 
         window.addEventListener('scroll', onScroll, { passive: true })
-        update() 
+        update()
         return () => window.removeEventListener('scroll', onScroll)
     }, [])
 
