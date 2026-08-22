@@ -1143,7 +1143,7 @@ function Resume() {
                             <em className="not-italic font-extralight" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>Education.</em>
                         </h2>
                         <motion.a
-                            href="https://drive.google.com/file/d/1-qY9fbLdEfjMJSL01UFG_koLcNaRBEbY/view?usp=sharing"
+                            href="https://drive.google.com/file/d/1aScjagrDO795MG9THDO8_CrDIIRUJ6Pw/view?usp=sharing"
                             target="_blank"
                             rel="noreferrer"
                             whileHover={{ scale: 1.04, boxShadow: dark ? '0 8px 24px rgba(76,142,247,0.35)' : '0 8px 24px rgba(29,29,31,0.2)' }}
