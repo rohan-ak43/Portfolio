@@ -75,6 +75,7 @@ const TIMELINE = [
         title: 'Co – Founder | Lead Developer',
         org: './localhost Studios',
         period: '2025 — Present',
+        logo: '/logos/localhost.jpg',
         description:
             "Co-founded './localhost', a student-led venture creating expressive digital tools. Leading development of Forá time capsule app with focus on seamless integration and scalability.Leading the development of Forá – a time capsule messaging app that allows users to send messages to the future.",
     },
@@ -83,6 +84,7 @@ const TIMELINE = [
         title: 'Mobile App Developer Intern',
         org: 'Neohorizon Analytics',
         period: 'June 2025 – July 2025',
+        logo: '/logos/neohorizon.jpg',
         description:
             'Developed iOS Dynamic Island Live Activity app using SwiftUI and ActivityKit with 95% success rate in realtime stock updates; implemented 40-second auto-refresh for seamless tracking.',
     },
@@ -1084,6 +1086,88 @@ function About() {
 
 // Resume 
 
+// CompanyLogo — shows a company image with a graceful initials fallback
+function CompanyLogo({
+    logo,
+    org,
+    dark,
+    badgeColor,
+    inView,
+    index,
+}: {
+    logo?: string
+    org: string
+    dark: boolean
+    badgeColor: string
+    inView: boolean
+    index: number
+}) {
+    const [imgError, setImgError] = useState(false)
+
+    // Derive initials: first letter of each word, max 2
+    const initials = org
+        .split(/[\s./]+/)
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((w) => w[0].toUpperCase())
+        .join('')
+
+    const wrapperStyle: CSSProperties = {
+        width: 60,
+        height: 60,
+        flexShrink: 0,
+        borderRadius: 10,
+        overflow: 'hidden',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        border: dark
+            ? '1px solid rgba(255,255,255,0.10)'
+            : '1px solid rgba(29,29,31,0.10)',
+        backgroundColor: dark ? '#1E1E1E' : '#FFFFFF',
+    }
+
+    const fallbackStyle: CSSProperties = {
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: badgeColor,
+        color: dark ? '#93C5FD' : '#1D1D1F',
+        fontWeight: 600,
+        fontSize: 16,
+        letterSpacing: '0.04em',
+        fontFamily: 'inherit',
+    }
+
+    return (
+        <motion.div
+            style={wrapperStyle}
+            initial={{ scale: 0, opacity: 0 }}
+            animate={inView ? { scale: 1, opacity: 1 } : {}}
+            transition={{ duration: 0.4, delay: index * 0.07 + 0.15, type: 'spring', stiffness: 280, damping: 22 }}
+            aria-hidden="true"
+        >
+            {logo && !imgError ? (
+                <img
+                    src={logo}
+                    alt={`${org} logo`}
+                    onError={() => setImgError(true)}
+                    style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'contain',
+                        display: 'block',
+                    }}
+                />
+            ) : (
+                <div style={fallbackStyle}>{initials}</div>
+            )}
+        </motion.div>
+    )
+}
+
 function TimelineItem({ item, index }: { item: (typeof TIMELINE)[0]; index: number }) {
     const { dark } = useContext(ThemeContext)
     const ref = useRef(null)
@@ -1091,6 +1175,8 @@ function TimelineItem({ item, index }: { item: (typeof TIMELINE)[0]; index: numb
     const style = TYPE_STYLE[item.type]
     const dotColor = dark ? '#4C8EF7' : style.dot
     const badgeColor = dark ? 'rgba(76,142,247,0.18)' : style.badge
+    const isExperience = item.type === 'experience'
+    const lineColor = dark ? 'rgba(255,255,255,0.08)' : 'rgba(29,29,31,0.10)'
 
     return (
         <motion.div
@@ -1098,18 +1184,52 @@ function TimelineItem({ item, index }: { item: (typeof TIMELINE)[0]; index: numb
             initial={{ opacity: 0, x: -20 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: index * 0.07, ease: [0.22, 1, 0.36, 1] }}
-            className="flex gap-5"
+            className="flex gap-4"
+            style={{ alignItems: 'flex-start' }}
         >
-            <div className="flex flex-col items-center">
-                <motion.div
-                    style={{ backgroundColor: dotColor, boxShadow: `0 0 0 4px ${badgeColor}` }}
-                    className="w-3 h-3 rounded-full mt-1.5 shrink-0"
-                    initial={{ scale: 0 }}
-                    animate={inView ? { scale: 1 } : {}}
-                    transition={{ duration: 0.4, delay: index * 0.07 + 0.2, type: 'spring', stiffness: 300 }}
+            {/* Left column: marker + vertical line */}
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    flexShrink: 0,
+                    width: isExperience ? 60 : 'auto',
+                }}
+            >
+                {isExperience ? (
+                    <CompanyLogo
+                        logo={(item as { logo?: string }).logo}
+                        org={item.org}
+                        dark={dark}
+                        badgeColor={badgeColor}
+                        inView={inView}
+                        index={index}
+                    />
+                ) : (
+                    <motion.div
+                        style={{ backgroundColor: dotColor, boxShadow: `0 0 0 4px ${badgeColor}`, marginTop: 6, flexShrink: 0 }}
+                        className="w-3 h-3 rounded-full"
+                        initial={{ scale: 0 }}
+                        animate={inView ? { scale: 1 } : {}}
+                        transition={{ duration: 0.4, delay: index * 0.07 + 0.2, type: 'spring', stiffness: 300 }}
+                    />
+                )}
+                {/* Vertical connecting line */}
+                <div
+                    aria-hidden="true"
+                    style={{
+                        flex: 1,
+                        width: 1,
+                        minHeight: 24,
+                        marginTop: 8,
+                        backgroundColor: lineColor,
+                    }}
                 />
             </div>
-            <div className="pb-10">
+
+            {/* Right column: content */}
+            <div className="pb-10" style={{ flex: 1, minWidth: 0 }}>
                 <div className="flex flex-wrap items-center gap-2.5 mb-1.5">
                     <span
                         style={{ backgroundColor: badgeColor, color: dark ? '#93C5FD' : '#1D1D1F' }}
