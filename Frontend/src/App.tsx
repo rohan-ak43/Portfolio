@@ -91,7 +91,7 @@ const JOURNEY = [
     {
         type: 'education',
         title: 'B.S. Abdur Rahman Crescent Institute of Science and Technology',
-        org: 'B.Tech CSE(IoT)',
+        org: 'B.Tech.CSE(IoT)',
         period: '2023 — 2027',
         logo: '/logos/crescent.jpg',
         description:
@@ -100,7 +100,7 @@ const JOURNEY = [
     {
         type: 'education',
         title: 'Sir Mutha School',
-        org: 'Higher Secondary School - CBSE',
+        org: 'Higher Secondary - CBSE',
         period: '2018 — 2023',
         logo: '/logos/sirmutha.jpg',
         description:
