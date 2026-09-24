@@ -75,7 +75,7 @@ const TIMELINE = [
         title: 'Co – Founder | Lead Developer',
         org: './localhost Studios',
         period: '2025 — Present',
-        logo: '/logos/localhost.jpg',
+        logo: '/logos/localhost.jpeg',
         description:
             "Co-founded './localhost', a student-led venture creating expressive digital tools. Leading development of Forá time capsule app with focus on seamless integration and scalability.Leading the development of Forá – a time capsule messaging app that allows users to send messages to the future.",
     },
