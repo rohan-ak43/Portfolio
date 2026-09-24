@@ -90,9 +90,10 @@ const TIMELINE = [
     },
     {
         type: 'education',
-        title: 'B.S. Abdur Rahman Crescent Institute of Technology',
+        title: 'B.S. Abdur Rahman Crescent Institute of Science and Technology',
         org: 'B.Tech CSE(IoT)',
         period: '2023 — 2027',
+        logo: '/logos/crescent.jpg',
         description:
             "A 4th year undergraduate student with a strong foundation in computer science and a passion for artificial intelligence, machine learning and neural networks. \n Related Coursework: Data Structures & Algorithms, Python Programming, Probability & Statistics, Database Management System, Data Science and Machine Learning."
     },
@@ -1176,6 +1177,7 @@ function TimelineItem({ item, index }: { item: (typeof TIMELINE)[0]; index: numb
     const dotColor = dark ? '#4C8EF7' : style.dot
     const badgeColor = dark ? 'rgba(76,142,247,0.18)' : style.badge
     const isExperience = item.type === 'experience'
+    const hasLogo = !!(item as { logo?: string }).logo
     const lineColor = dark ? 'rgba(255,255,255,0.08)' : 'rgba(29,29,31,0.10)'
 
     return (
@@ -1194,10 +1196,10 @@ function TimelineItem({ item, index }: { item: (typeof TIMELINE)[0]; index: numb
                     flexDirection: 'column',
                     alignItems: 'center',
                     flexShrink: 0,
-                    width: isExperience ? 60 : 'auto',
+                    width: hasLogo ? 60 : 'auto',
                 }}
             >
-                {isExperience ? (
+                {hasLogo ? (
                     <CompanyLogo
                         logo={(item as { logo?: string }).logo}
                         org={item.org}
