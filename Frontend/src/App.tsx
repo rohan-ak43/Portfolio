@@ -113,6 +113,14 @@ const TIMELINE = [
         description:
             'Data Analytics fundamentals using pandas',
     },
+    {
+        type: 'certification',
+        title: 'Supervised Machine Learning: Regression and Classification',
+        org: 'DeepLearning.AI',
+        period: 'Aug 2026',
+        description:
+            'Covered supervised learning fundamentals including linear regression, logistic regression, gradient descent, and classification techniques using Python and scikit-learn.',
+    },
 ]
 
 const SKILLS_DATA: Record<string, string[]> = {
