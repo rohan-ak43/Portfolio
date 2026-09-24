@@ -69,7 +69,7 @@ const PROJECTS = [
     },
 ]
 
-const TIMELINE = [
+const JOURNEY = [
     {
         type: 'experience',
         title: 'Co – Founder | Lead Developer',
@@ -98,7 +98,19 @@ const TIMELINE = [
             "A 4th year undergraduate student with a strong foundation in computer science and a passion for artificial intelligence, machine learning and neural networks. \n Related Coursework: Data Structures & Algorithms, Python Programming, Probability & Statistics, Database Management System, Data Science and Machine Learning."
     },
     {
-        type: 'achievement',
+        type: 'education',
+        title: 'Sir Mutha School',
+        org: 'Higher Secondary School - CBSE',
+        period: '2018 — 2023',
+        logo: '/logos/sirmutha.jpg',
+        description:
+            ""
+    }
+]
+
+const ACHIEVEMENTS = [
+    {
+        type: 'Achievement',
         title: 'Aarambh Hackathon - Winner',
         org: 'Vel Tech Rangarajan Dr. Sagunthala R & D Institute of Science & Technology, Chennai ',
         period: 'November 2025',
@@ -106,7 +118,7 @@ const TIMELINE = [
             'First place for buliding Remo Rehab - a remote rehabilitation platform powered by the Gemini API for AI feedback, smart exercise suggestions, and automated patient report summaries - bridging the gap between doctors and patients.',
     },
     {
-        type: 'certification',
+        type: 'Certification',
         title: 'DATA ANALYTICS USING PANDAS',
         org: 'Guvi Geek Networks, IITM Research Park',
         period: 'Jan 2025',
@@ -114,7 +126,7 @@ const TIMELINE = [
             'Data Analytics fundamentals using pandas',
     },
     {
-        type: 'certification',
+        type: 'Certification',
         title: 'Supervised Machine Learning: Regression and Classification',
         org: 'DeepLearning.AI',
         period: 'Aug 2026',
@@ -1177,15 +1189,15 @@ function CompanyLogo({
     )
 }
 
-function TimelineItem({ item, index }: { item: (typeof TIMELINE)[0]; index: number }) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function TimelineItem({ item, index, isLast }: { item: any; index: number; isLast?: boolean }) {
     const { dark } = useContext(ThemeContext)
     const ref = useRef(null)
     const inView = useInView(ref, { once: true, margin: '-60px' })
-    const style = TYPE_STYLE[item.type]
-    const dotColor = dark ? '#4C8EF7' : style.dot
-    const badgeColor = dark ? 'rgba(76,142,247,0.18)' : style.badge
-    const isExperience = item.type === 'experience'
-    const hasLogo = !!(item as { logo?: string }).logo
+    const style = item.type ? TYPE_STYLE[item.type.toLowerCase()] : null
+    const dotColor = dark ? '#4C8EF7' : (style ? style.dot : '#1D1D1F')
+    const badgeColor = dark ? 'rgba(76,142,247,0.18)' : (style ? style.badge : 'rgba(29,29,31,0.18)')
+    const hasLogo = !!item.logo
     const lineColor = dark ? 'rgba(255,255,255,0.08)' : 'rgba(29,29,31,0.10)'
 
     return (
@@ -1226,27 +1238,31 @@ function TimelineItem({ item, index }: { item: (typeof TIMELINE)[0]; index: numb
                     />
                 )}
                 {/* Vertical connecting line */}
-                <div
-                    aria-hidden="true"
-                    style={{
-                        flex: 1,
-                        width: 1,
-                        minHeight: 24,
-                        marginTop: 8,
-                        backgroundColor: lineColor,
-                    }}
-                />
+                {!isLast && (
+                    <div
+                        aria-hidden="true"
+                        style={{
+                            flex: 1,
+                            width: 1,
+                            minHeight: 24,
+                            marginTop: 8,
+                            backgroundColor: lineColor,
+                        }}
+                    />
+                )}
             </div>
 
             {/* Right column: content */}
-            <div className="pb-10" style={{ flex: 1, minWidth: 0 }}>
+            <div className={isLast ? "pb-0" : "pb-10"} style={{ flex: 1, minWidth: 0 }}>
                 <div className="flex flex-wrap items-center gap-2.5 mb-1.5">
-                    <span
-                        style={{ backgroundColor: badgeColor, color: dark ? '#93C5FD' : '#1D1D1F' }}
-                        className="text-[11px] font-medium px-2.5 py-0.5 rounded-full"
-                    >
-                        {style.label}
-                    </span>
+                    {style?.label && (
+                        <span
+                            style={{ backgroundColor: badgeColor, color: dark ? '#93C5FD' : '#1D1D1F' }}
+                            className="text-[11px] font-medium px-2.5 py-0.5 rounded-full"
+                        >
+                            {style.label}
+                        </span>
+                    )}
                     <span className="text-[11px] font-mono" style={{ color: dark ? '#6E6E73' : '#86868B' }}>{item.period}</span>
                 </div>
                 <h3 className="font-display font-semibold text-[17px] leading-tight" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>
@@ -1295,8 +1311,33 @@ function Resume() {
                     </div>
                 </FadeUp>
                 <div className="max-w-full lg:max-w-[580px]">
-                    {TIMELINE.map((item, i) => (
-                        <TimelineItem key={i} item={item} index={i} />
+                    {JOURNEY.map((item, i) => (
+                        <TimelineItem key={i} item={item} index={i} isLast={i === JOURNEY.length - 1} />
+                    ))}
+                </div>
+            </div>
+        </section>
+    )
+}
+
+// Achievements 
+
+function Achievements() {
+    const { dark } = useContext(ThemeContext)
+    return (
+        <section id="achievements" className="py-16 sm:py-24 lg:py-32" style={{ backgroundColor: dark ? '#111111' : '#FFFFFF' }}>
+            <div className="max-w-6xl mx-auto px-4 sm:px-6">
+                <FadeUp className="mb-16">
+                    <SectionLabel>Milestones</SectionLabel>
+                    <div className="flex flex-wrap items-end justify-between gap-6">
+                        <h2 className="font-display font-bold tracking-[-0.02em]" style={{ color: dark ? '#F5F5F7' : '#1D1D1F', fontSize: 'clamp(1.875rem, 5vw, 3rem)' }}>
+                            Achievements
+                        </h2>
+                    </div>
+                </FadeUp>
+                <div className="max-w-full lg:max-w-[580px]">
+                    {ACHIEVEMENTS.map((item, i) => (
+                        <TimelineItem key={i} item={item} index={i} isLast={i === ACHIEVEMENTS.length - 1} />
                     ))}
                 </div>
             </div>
@@ -1380,7 +1421,7 @@ function ProjectCard({ project, index }: { project: (typeof PROJECTS)[0]; index:
 function Portfolio() {
     const { dark } = useContext(ThemeContext)
     return (
-        <section id="portfolio" className="py-16 sm:py-24 lg:py-32" style={{ backgroundColor: dark ? '#111111' : '#FFFFFF' }}>
+        <section id="portfolio" className="py-16 sm:py-24 lg:py-32" style={{ backgroundColor: dark ? '#0A0A0A' : '#F5F5F7' }}>
             <div className="max-w-6xl mx-auto px-4 sm:px-6">
                 <FadeUp className="mb-10 sm:mb-16">
                     <SectionLabel>Work</SectionLabel>
@@ -1405,7 +1446,7 @@ function Portfolio() {
 function Skills() {
     const { dark } = useContext(ThemeContext)
     return (
-        <section id="skills" className="py-16 sm:py-24 lg:py-32" style={{ backgroundColor: dark ? '#0A0A0A' : '#F5F5F7' }}>
+        <section id="skills" className="py-16 sm:py-24 lg:py-32" style={{ backgroundColor: dark ? '#111111' : '#FFFFFF' }}>
             <div className="max-w-6xl mx-auto px-4 sm:px-6">
                 <FadeUp className="mb-10 sm:mb-16">
                     <SectionLabel>Toolkit</SectionLabel>
@@ -1517,7 +1558,7 @@ function Contact() {
     const isDisabled = sending || sent
 
     return (
-        <section id="contact" className="py-16 sm:py-24 lg:py-32" style={{ backgroundColor: dark ? '#111111' : '#FFFFFF' }}>
+        <section id="contact" className="py-16 sm:py-24 lg:py-32" style={{ backgroundColor: dark ? '#0A0A0A' : '#F5F5F7' }}>
             <div className="max-w-6xl mx-auto px-4 sm:px-6">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
                     <FadeUp>
@@ -1734,6 +1775,7 @@ export default function App() {
                 <Hero />
                 <About />
                 <Resume />
+                <Achievements />
                 <Portfolio />
                 <Skills />
                 <Contact />
