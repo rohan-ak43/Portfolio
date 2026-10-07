@@ -26,7 +26,18 @@ const ThemeContext = createContext<{ dark: boolean; toggleDark: () => void }>({
 
 const NAV_LINKS = ['Home', 'About', 'Resume', 'Portfolio', 'Skills', 'Contact']
 
-const PROJECTS = [
+interface Project {
+    title: string
+    description: string
+    tags: string[]
+    accent: string
+    img: string
+    imgAlt: string
+    github: string
+    liveDemo?: string
+}
+
+const PROJECTS: Project[] = [
     {
         title: 'CrickIQ - AI Cricket Analytics',
         description:
@@ -36,6 +47,7 @@ const PROJECTS = [
         img: 'CrickIQ.png',
         imgAlt: 'CrickIQ AI Cricket Analytics platform homepage',
         github: 'https://github.com/rohan-ak43/Cricket-Analytics-',
+        liveDemo: 'https://cricket-analytics-inky.vercel.app/',
     },
     {
         title: 'CReqx - Movie Recommendation Engine',
@@ -46,6 +58,7 @@ const PROJECTS = [
         img: 'CReqx.png',
         imgAlt: 'Cinema theater interior',
         github: 'https://github.com/rohan-ak43/CReqx',
+        liveDemo: 'https://creqx.vercel.app/',
     },
     {
         title: 'RemoRehab - Remote Rehabilitation Platform',
@@ -1348,7 +1361,7 @@ function Achievements() {
 
 // Portfolio 
 
-function ProjectCard({ project, index }: { project: (typeof PROJECTS)[0]; index: number }) {
+function ProjectCard({ project, index }: { project: Project; index: number }) {
     const { dark } = useContext(ThemeContext)
     const ref = useRef(null)
     const inView = useInView(ref, { once: true, margin: '-60px' })
@@ -1400,17 +1413,31 @@ function ProjectCard({ project, index }: { project: (typeof PROJECTS)[0]; index:
                     <h3 className="font-display font-bold text-[15px] sm:text-[16px] mb-2" style={{ color: dark ? '#F5F5F7' : '#1D1D1F' }}>{project.title}</h3>
                     <p className="text-[13px] leading-relaxed mb-4 flex-1 line-clamp-4" style={{ color: dark ? '#8E8E93' : '#6E6E73' }}>{project.description}</p>
 
-                    <div className="flex justify-center">
+                    <div className="flex flex-col sm:flex-row gap-2.5 items-center justify-center w-full mt-auto">
                         <motion.a
                             href={project.github}
                             target="_blank"
                             rel="noopener noreferrer"
                             whileTap={{ scale: 0.95 }}
-                            className="w-[85%] sm:w-[75%] text-center text-[12px] font-medium py-2.5 rounded-xl transition-colors cursor-pointer"
+                            className={`text-center text-[12px] font-medium py-2.5 rounded-xl transition-colors cursor-pointer ${
+                                project.liveDemo ? 'w-full sm:flex-1' : 'w-[85%] sm:w-[75%]'
+                            }`}
                             style={{ background: dark ? '#FFFFFF' : '#1D1D1F', color: dark ? '#0A0A0A' : '#FFFFFF' }}
                         >
                             GitHub
                         </motion.a>
+                        {project.liveDemo && (
+                            <motion.a
+                                href={project.liveDemo}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                whileTap={{ scale: 0.95 }}
+                                className="w-full sm:flex-1 text-center text-[12px] font-medium py-2.5 rounded-xl transition-colors cursor-pointer"
+                                style={{ background: dark ? '#FFFFFF' : '#1D1D1F', color: dark ? '#0A0A0A' : '#FFFFFF' }}
+                            >
+                                Live Demo
+                            </motion.a>
+                        )}
                     </div>
                 </div>
             </motion.div>
