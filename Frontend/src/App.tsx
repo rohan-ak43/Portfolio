@@ -123,10 +123,20 @@ const JOURNEY = [
 
 const ACHIEVEMENTS = [
     {
+        type: 'Certification',
+        title: 'Supervised Machine Learning: Regression and Classification',
+        org: 'DeepLearning.AI',
+        period: 'Aug 2026',
+        date: new Date(2026, 7, 1), // August 2026
+        description:
+            'Covered supervised learning fundamentals including linear regression, logistic regression, gradient descent, and classification techniques using Python and scikit-learn.',
+    },
+    {
         type: 'Achievement',
         title: 'Aarambh Hackathon - Winner',
         org: 'Vel Tech Rangarajan Dr. Sagunthala R & D Institute of Science & Technology, Chennai ',
         period: 'November 2025',
+        date: new Date(2025, 10, 1), // November 2025
         description:
             'First place for buliding Remo Rehab - a remote rehabilitation platform powered by the Gemini API for AI feedback, smart exercise suggestions, and automated patient report summaries - bridging the gap between doctors and patients.',
     },
@@ -135,18 +145,11 @@ const ACHIEVEMENTS = [
         title: 'DATA ANALYTICS USING PANDAS',
         org: 'Guvi Geek Networks, IITM Research Park',
         period: 'Jan 2025',
+        date: new Date(2025, 0, 1), // January 2025
         description:
             'Data Analytics fundamentals using pandas',
     },
-    {
-        type: 'Certification',
-        title: 'Supervised Machine Learning: Regression and Classification',
-        org: 'DeepLearning.AI',
-        period: 'Aug 2026',
-        description:
-            'Covered supervised learning fundamentals including linear regression, logistic regression, gradient descent, and classification techniques using Python and scikit-learn.',
-    },
-]
+].sort((a, b) => b.date.getTime() - a.date.getTime())
 
 const SKILLS_DATA: Record<string, string[]> = {
     Programming: ['Python', 'HTML', 'CSS', 'JavaScript', 'TypeScript', 'MYSQL'],
@@ -170,7 +173,7 @@ const TYPE_STYLE: Record<string, { dot: string; badge: string; label: string }> 
     education: { dot: '#1D1D1F', badge: 'rgba(29,29,31,0.18)', label: 'Education' },
     experience: { dot: '#1D1D1F', badge: 'rgba(29,29,31,0.18)', label: 'Experience' },
     achievement: { dot: '#1D1D1F', badge: 'rgba(29,29,31,0.18)', label: 'Achievement' },
-    certification: { dot: '#86868B', badge: 'rgba(134,134,139,0.18)', label: 'Certification' },
+    certification: { dot: '#1D1D1F', badge: 'rgba(29,29,31,0.18)', label: 'Certification' },
 }
 
 // Shared primitives 
@@ -1419,9 +1422,8 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
                             target="_blank"
                             rel="noopener noreferrer"
                             whileTap={{ scale: 0.95 }}
-                            className={`text-center text-[12px] font-medium py-2.5 rounded-xl transition-colors cursor-pointer ${
-                                project.liveDemo ? 'w-full sm:flex-1' : 'w-[85%] sm:w-[75%]'
-                            }`}
+                            className={`text-center text-[12px] font-medium py-2.5 rounded-xl transition-colors cursor-pointer ${project.liveDemo ? 'w-full sm:flex-1' : 'w-[85%] sm:w-[75%]'
+                                }`}
                             style={{ background: dark ? '#FFFFFF' : '#1D1D1F', color: dark ? '#0A0A0A' : '#FFFFFF' }}
                         >
                             GitHub
