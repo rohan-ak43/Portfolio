@@ -147,7 +147,7 @@ const ACHIEVEMENTS = [
         period: 'Jan 2025',
         date: new Date(2025, 0, 1), // January 2025
         description:
-            'Data Analytics fundamentals using pandas',
+            'Covered Pandas fundamentals, data loading, DataFrame manipulation, sorting, indexing, and statistical functions. Explored datetime handling, data grouping, visualization, and combining datasets using merge, join, append, and concat, with a final hands-on project.',
     },
 ].sort((a, b) => b.date.getTime() - a.date.getTime())
 
